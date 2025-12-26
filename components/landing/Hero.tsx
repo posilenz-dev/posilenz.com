@@ -22,7 +22,7 @@ export default function Hero() {
 
     return (
         <section id="hero" className="hero-container section">
-            <div className="container">
+            <div className="container mx-auto flex flex-col items-center justify-center">
                 <div className="hero-content">
                     <div className="hero-interactive">
                         {/* SVG Loader Pattern Text (shown by default) */}

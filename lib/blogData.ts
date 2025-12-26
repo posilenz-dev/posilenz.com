@@ -1,22 +1,24 @@
 export interface BlogPost {
-    id: string;
-    slug: string;
-    number: string;
-    date: string;
-    title: string;
-    image: string;
-    content: string; // HTML content or strict structure
+  id: string;
+  slug: string;
+  number: string;
+  date: string;
+  title: string;
+  image: string;
+  excerpt?: string; // Optional for now to avoid breaking if valid check is strict, but we will populate all
+  content: string; // HTML content or strict structure
 }
 
 export const blogPosts: BlogPost[] = [
-    {
-        id: "1",
-        slug: "the-rise-of-edge-computing",
-        number: "27",
-        date: "Nov 2025",
-        title: "The Rise of Edge Computing: Why Your Data Strategy Needs a 2026 Reboot",
-        image: "/images/blog-dtls.png",
-        content: `
+  {
+    id: "1",
+    slug: "the-rise-of-edge-computing",
+    number: "27",
+    date: "Nov 2025",
+    title: "The Rise of Edge Computing: Why Your Data Strategy Needs a 2026 Reboot",
+    excerpt: "Edge computing isn't just a technical evolution; it's a strategic imperative that's forcing organisations to rethink their entire data architecture.",
+    image: "/images/blog-dtls.png",
+    content: `
       <p class="article-paragraph">
         The way we process, store, and analyse data is undergoing a fundamental transformation. For years, cloud computing has been the backbone of digital infrastructure, centralising data processing in massive data centers. But as we move deeper into 2025 and look toward 2026, a new paradigm is rapidly taking hold: edge computing. This shift isn't just a technical evolution; it's a strategic imperative that's forcing organisations to rethink their entire data architecture. Edge computing brings computation and data storage closer to where data is generated, rather than relying on a centralised cloud-based system. Whether it's IoT sensors in a manufacturing plant, autonomous vehicles on city streets, or AR/VR applications in retail stores, the explosion of connected devices is creating data volumes that simply can't be efficiently or economically processed in distant data centers. The latency, bandwidth costs, and real-time requirements of modern applications are making the traditional cloud-centric model increasingly untenable.
       </p>
@@ -89,15 +91,16 @@ export const blogPosts: BlogPost[] = [
         As we enter 2026, the question isn't whether to adopt edge computing, but how quickly and strategically you can do so. The organisations that thrive in the next decade will be those that successfully orchestrate data processing across the edge-to-cloud continuum, leveraging the right computing resources in the right locations for each task. The rise of edge computing represents one of the most significant shifts in IT architecture since the advent of cloud computing itself—and your data strategy needs to evolve accordingly.
       </p>
     `
-    },
-    {
-        id: "2",
-        slug: "cloud-erp-implementation",
-        number: "26",
-        date: "Nov 2025",
-        title: "Cloud ERP Implementation: Avoiding the Three Most Common Integration Pitfalls",
-        image: "/images/blog-dtls2.png",
-        content: `
+  },
+  {
+    id: "2",
+    slug: "cloud-erp-implementation",
+    number: "26",
+    date: "Nov 2025",
+    title: "Cloud ERP Implementation: Avoiding the Three Most Common Integration Pitfalls",
+    excerpt: "Research indicates that nearly 70% of ERP implementations fail to meet their original objectives. Learn how to avoid the most common integration pitfalls.",
+    image: "/images/blog-dtls2.png",
+    content: `
       <p class="article-paragraph">
         Enterprise Resource Planning systems have migrated to the cloud, promising unprecedented flexibility, scalability, and cost efficiency. Yet despite these advantages, many organizations discover that their cloud ERP implementation doesn't deliver the transformative results they anticipated. The culprit? Integration failures that undermine even the most sophisticated ERP platforms.
       </p>
@@ -214,15 +217,16 @@ export const blogPosts: BlogPost[] = [
         Organizations that approach cloud ERP integration strategically, investing in data quality, thoroughly mapping system dependencies, and prioritizing user adoption, don't just avoid pitfalls—they create competitive advantages. In an increasingly digital business environment, integration excellence isn't optional—it's essential for sustained success.
       </p>
     `
-    },
-    {
-        id: "3",
-        slug: "human-centric-ui-ux",
-        number: "25",
-        date: "Nov 2025",
-        title: "How 'Human-Centric' UI/UX Design Drives Adoption in Enterprise Software",
-        image: "/images/blog-dtls3.png",
-        content: `
+  },
+  {
+    id: "3",
+    slug: "human-centric-ui-ux",
+    number: "25",
+    date: "Nov 2025",
+    title: "How 'Human-Centric' UI/UX Design Drives Adoption in Enterprise Software",
+    excerpt: "Human-centric design represents a fundamental shift in how enterprise software is conceived. Learn why it is a strategic business imperative.",
+    image: "/images/blog-dtls3.png",
+    content: `
       <p class="article-paragraph">
         Enterprise software has long suffered from a reputation problem: powerful functionality buried beneath frustrating interfaces that users actively resist. While these systems offer sophisticated capabilities essential for business operations, their complexity often translates into poor adoption rates, expensive training programs, and workarounds that undermine their value. The core issue isn't the technology; it's the design philosophy that prioritizes features over the people who must use them daily.
       </p>
@@ -357,5 +361,5 @@ export const blogPosts: BlogPost[] = [
         As enterprise software continues evolving with AI integration, mobile capabilities, and increasing complexity, human-centric design becomes even more critical. The organizations that recognize design quality as a strategic consideration will build more capable, more satisfied workforces equipped with tools that enhance rather than hinder their effectiveness.
       </p>
     `
-    }
+  }
 ];

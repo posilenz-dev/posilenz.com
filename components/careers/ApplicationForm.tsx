@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { submitApplication } from "@/app/actions";
 
 export default function ApplicationForm() {
     const [fileName, setFileName] = useState("Resume / CV Upload (PDF only, 5-10MB max)");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -11,9 +13,22 @@ export default function ApplicationForm() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        alert("Thank you for your application! We will review it and get back to you soon.");
+        setIsSubmitting(true);
+
+        try {
+            const formData = new FormData(e.currentTarget);
+            await submitApplication(formData);
+            alert("Thank you for your application! We will review it and get back to you soon.");
+            (e.target as HTMLFormElement).reset();
+            setFileName("Resume / CV Upload (PDF only, 5-10MB max)");
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -26,10 +41,10 @@ export default function ApplicationForm() {
                     <div className="form-group">
                         <h3 className="form-group-title">Personal Information</h3>
                         <div className="form-fields">
-                            <input type="text" className="form-input" placeholder="Full Name*" required />
-                            <input type="email" className="form-input" placeholder="Email Address*" required />
-                            <input type="tel" className="form-input" placeholder="Phone Number *" required />
-                            <input type="text" className="form-input" placeholder="Current Location (City, Country)" />
+                            <input name="name" type="text" className="form-input" placeholder="Full Name*" required disabled={isSubmitting} />
+                            <input name="email" type="email" className="form-input" placeholder="Email Address*" required disabled={isSubmitting} />
+                            <input name="phone" type="tel" className="form-input" placeholder="Phone Number *" required disabled={isSubmitting} />
+                            <input name="location" type="text" className="form-input" placeholder="Current Location (City, Country)" disabled={isSubmitting} />
                         </div>
                     </div>
 
@@ -37,14 +52,14 @@ export default function ApplicationForm() {
                     <div className="form-group">
                         <h3 className="form-group-title">Role Details</h3>
                         <div className="form-fields">
-                            <select className="form-input" required defaultValue="">
+                            <select name="position" className="form-input" required defaultValue="" disabled={isSubmitting}>
                                 <option value="" disabled>Position Applying For *</option>
                                 <option value="senior-developer">Senior Developer</option>
                                 <option value="graphic-designer">Graphic Designer</option>
                                 <option value="social-media-expert">Social Media Expert</option>
                             </select>
-                            <input type="text" className="form-input" placeholder="Notice Period / Availability *" required />
-                            <input type="text" className="form-input" placeholder="Expected Salary Range (Optional)" />
+                            <input name="noticePeriod" type="text" className="form-input" placeholder="Notice Period / Availability *" required disabled={isSubmitting} />
+                            <input name="salary" type="text" className="form-input" placeholder="Expected Salary Range (Optional)" disabled={isSubmitting} />
                         </div>
                     </div>
 
@@ -52,9 +67,9 @@ export default function ApplicationForm() {
                     <div className="form-group">
                         <h3 className="form-group-title">Experience & Skills</h3>
                         <div className="form-fields">
-                            <input type="text" className="form-input" placeholder="Years of Experience *" required />
-                            <input type="url" className="form-input" placeholder="Portfolio / GitHub / Behance / LinkedIn URL *" required />
-                            <textarea className="form-input form-textarea" placeholder="Specialisation / Key Skills" rows={3}></textarea>
+                            <input name="experience" type="text" className="form-input" placeholder="Years of Experience *" required disabled={isSubmitting} />
+                            <input name="portfolio" type="url" className="form-input" placeholder="Portfolio / GitHub / Behance / LinkedIn URL *" required disabled={isSubmitting} />
+                            <textarea name="skills" className="form-input form-textarea" placeholder="Specialisation / Key Skills" rows={3} disabled={isSubmitting}></textarea>
                         </div>
                     </div>
 
@@ -63,7 +78,7 @@ export default function ApplicationForm() {
                         <h3 className="form-group-title">Resume Upload</h3>
                         <div className="form-fields">
                             <div className="file-upload-box">
-                                <input type="file" id="resume" accept=".pdf" required onChange={handleFileChange} />
+                                <input name="resume" type="file" id="resume" accept=".pdf" required onChange={handleFileChange} disabled={isSubmitting} />
                                 <label htmlFor="resume" className="file-upload-label">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10 13V4M10 4L7 7M10 4L13 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -79,19 +94,21 @@ export default function ApplicationForm() {
                     <div className="form-group">
                         <h3 className="form-group-title">Short Qualification</h3>
                         <div className="form-fields">
-                            <textarea className="form-input form-textarea" placeholder="Why do you want to join Posilenz? (100-150 chars)" rows={3} maxLength={150}></textarea>
+                            <textarea name="qualification" className="form-input form-textarea" placeholder="Why do you want to join Posilenz? (100-150 chars)" rows={3} maxLength={150} disabled={isSubmitting}></textarea>
                         </div>
                     </div>
 
                     {/* Consent */}
                     <div className="form-consent">
                         <label className="consent-label">
-                            <input type="checkbox" className="consent-checkbox" required />
+                            <input type="checkbox" className="consent-checkbox" required disabled={isSubmitting} />
                             <span className="consent-text">I confirm that the information provided is accurate and give consent to contact me.</span>
                         </label>
                     </div>
 
-                    <button type="submit" className="form-submit-btn">Submit</button>
+                    <button type="submit" className="form-submit-btn" disabled={isSubmitting}>
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                    </button>
                 </form>
             </div>
         </section>
