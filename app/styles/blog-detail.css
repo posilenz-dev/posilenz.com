@@ -1,0 +1,462 @@
+/* Blog Detail Page Specific Styles */
+
+/* Article Header Section */
+.article-header-section {
+    padding: 120px 24px 0;
+    background: white;
+    position: relative;
+}
+
+.article-header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    margin-bottom: 48px;
+}
+
+.breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: #0047FF;
+}
+
+.breadcrumb-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Article Header Content */
+.article-header-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+    min-height: 200vh;
+    padding-bottom: 70px;
+}
+
+.article-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-self: flex-start;
+    z-index: 100;
+    height: fit-content;
+    transition: all 0.3s ease;
+    position: sticky;
+    top: 100px;
+}
+
+/* Sticky positioning is now handled by the main .article-header-left rule above */
+
+.article-header-right {
+    position: relative;
+}
+
+/* Article Meta */
+.article-meta {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.article-number {
+    font-size: clamp(16px, 1.2vw, 20px);
+    font-weight: 600;
+    color: #1D54DD;
+    font-family: var(--font-heading);
+}
+
+.article-date {
+    font-size: clamp(13px, 1.2vw, 14px);
+    color: #0A1630;
+    font-weight: 500;
+}
+
+/* Article Title */
+.article-title {
+    font-size: clamp(24px, 1.2vw, 30px);
+    font-weight: 600;
+    color: #0A1630;
+    line-height: 1.2;
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+/* Share Button */
+.share-btn {
+    background: transparent;
+    border: 1px solid #e0e0e0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+    align-self: flex-start;
+}
+
+.share-btn:hover {
+    border-color: #0047FF;
+    color: #0047FF;
+    background: rgba(0, 71, 255, 0.05);
+}
+
+/* Share Popup */
+.share-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.share-popup.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.share-popup-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.share-popup.active .share-popup-content {
+    transform: translateY(0);
+}
+
+.share-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.share-popup-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0A1630;
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.share-popup-close {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.share-popup-close:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.share-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #666;
+    transition: all 0.2s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.share-option:hover {
+    background: #f8f9fa;
+    border-color: #0047FF;
+    color: #0047FF;
+    transform: translateY(-2px);
+}
+
+.share-option-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.share-option-icon.facebook {
+    background: #1877F2;
+}
+
+.share-option-icon.twitter {
+    background: #1DA1F2;
+}
+
+.share-option-icon.linkedin {
+    background: #0A66C2;
+}
+
+.share-option-icon.whatsapp {
+    background: #25D366;
+}
+
+.share-option-icon.copy {
+    background: #666;
+}
+
+.share-option-label {
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.share-url-section {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+}
+
+.share-url-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.share-url-input {
+    display: flex;
+    gap: 8px;
+}
+
+.share-url-field {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #f8f9fa;
+    color: #666;
+}
+
+.share-copy-btn {
+    padding: 12px 16px;
+    background: #0047FF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.share-copy-btn:hover {
+    background: #0038CC;
+}
+
+.share-copy-btn.copied {
+    background: #28a745;
+}
+
+/* Article Hero Image (now in header) */
+.article-hero-image {
+    width: 100%;
+    height: 350px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.article-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Article Content Section */
+.article-content-section {
+    padding: 0 24px 80px;
+    background: white;
+}
+
+.article-content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.article-content {
+    font-size: clamp(13px, 1.2vw, 14px);
+    line-height: 1.8;
+    color: #0A1630;
+    width: 100%;
+    padding-top: 60px;
+}
+
+.article-head {
+    font-size: clamp(16px, 1.2vw, 20px);
+    font-weight: 600;
+    padding-bottom: 15px;
+    line-height: 1.8;
+    color: #0A1630;
+    margin-left: auto;
+}
+
+.article-paragraph {
+    margin: 0 0 32px 0;
+}
+
+.article-paragraph:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .article-hero-image {
+        height: 350px;
+    }
+
+    .article-content {
+        width: 100%;
+    }
+}
+
+
+
+@media (max-width: 768px) {
+    .article-header-section {
+        padding: 60px 16px 60px;
+    }
+
+    .article-header-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .article-header-left {
+        gap: 24px;
+        position: relative;
+        top: auto;
+    }
+
+    .share-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .article-title {
+        font-size: 1.5rem;
+    }
+
+    .article-hero-image {
+        height: 250px;
+    }
+
+    .article-content-section {
+        padding: 0 16px 60px;
+    }
+
+    .article-content {
+        font-size: 1rem;
+        line-height: 1.7;
+        padding-top: 30px;
+    }
+
+    .article-paragraph {
+        margin-bottom: 24px;
+    }
+
+    .article-number {
+        font-size: 1.5rem;
+    }
+
+    .breadcrumb {
+        margin-bottom: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-title {
+        font-size: 1.5rem;
+    }
+
+    .article-hero-image {
+        height: 200px;
+        border-radius: 8px;
+    }
+
+    .article-content {
+        font-size: 0.9375rem;
+    }
+
+    .breadcrumb-link {
+        font-size: 0.875rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+
+    .navbar,
+    .share-btn,
+    .footer-section {
+        display: none;
+    }
+
+    .article-header-section {
+        padding-top: 40px;
+    }
+
+    .article-content {
+        font-size: 12pt;
+        line-height: 1.6;
+        color: black;
+    }
+
+    .article-title {
+        font-size: 24pt;
+        color: black;
+    }
+
+    .breadcrumb-link {
+        color: black;
+    }
+}

@@ -31,7 +31,7 @@ export default function FeaturedPost() {
                             the backbone of digital infrastructure, centralising data
                             processing in massive data centers.
                         </p>
-                        <Link href="/blog/blog-detail" className="featured-post-link">
+                        <Link href="/blog/the-rise-of-edge-computing" className="featured-post-link">
                             Read more
                         </Link>
                     </div>
