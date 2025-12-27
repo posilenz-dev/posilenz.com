@@ -1,30 +1,88 @@
 "use server";
 
-export async function submitContactForm(formData: FormData) {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+import { sendEmail } from "@/lib/mailer";
 
+export async function submitContactForm(formData: FormData) {
     const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        message: formData.get("message"),
+        name: formData.get("name") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        message: formData.get("message") as string,
     };
 
     console.log("Contact Form Submitted:", data);
 
-    // In a real app, you would send email or save to DB here
-    return { success: true, message: "Message sent successfully!" };
+    // Prepare email HTML
+    const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #1a1a1a; color: white; padding: 20px; text-align: center; }
+                    .content { background-color: #f9f9f9; padding: 20px; margin: 20px 0; }
+                    .field { margin-bottom: 15px; }
+                    .label { font-weight: bold; color: #666; }
+                    .value { margin-top: 5px; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h2>New Contact Form Submission</h2>
+                    </div>
+                    <div class="content">
+                        <div class="field">
+                            <div class="label">Name:</div>
+                            <div class="value">${data.name}</div>
+                        </div>
+                        <div class="field">
+                            <div class="label">Email:</div>
+                            <div class="value">${data.email}</div>
+                        </div>
+                        <div class="field">
+                            <div class="label">Phone:</div>
+                            <div class="value">${data.phone}</div>
+                        </div>
+                        <div class="field">
+                            <div class="label">Message:</div>
+                            <div class="value">${data.message}</div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `;
+
+    try {
+        await sendEmail({
+            to: process.env.EMAIL_TO || 'info@posilenz.com',
+            subject: `New Contact Form Submission from ${data.name}`,
+            html: emailHtml,
+            replyTo: data.email,
+        });
+
+        return { success: true, message: "Message sent successfully!" };
+    } catch (error) {
+        console.error("Error sending contact email:", error);
+        throw new Error("Failed to send message. Please try again later.");
+    }
 }
 
 export async function submitApplication(formData: FormData) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        linkedin: formData.get("linkedin"),
-        portfolio: formData.get("portfolio"),
-        position: formData.get("position"),
+        name: formData.get("name") as string,
+        email: formData.get("email") as string,
+        phone: formData.get("phone") as string,
+        location: formData.get("location") as string,
+        position: formData.get("position") as string,
+        noticePeriod: formData.get("noticePeriod") as string,
+        salary: formData.get("salary") as string,
+        experience: formData.get("experience") as string,
+        portfolio: formData.get("portfolio") as string,
+        skills: formData.get("skills") as string,
+        qualification: formData.get("qualification") as string,
         resume: formData.get("resume") as File | null,
     };
 
@@ -33,14 +91,168 @@ export async function submitApplication(formData: FormData) {
         resumeName: data.resume?.name,
     });
 
-    return { success: true, message: "Application submitted successfully!" };
+    // Prepare email HTML
+    const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #1a1a1a; color: white; padding: 20px; text-align: center; }
+                    .content { background-color: #f9f9f9; padding: 20px; margin: 20px 0; }
+                    .section { margin-bottom: 25px; }
+                    .section-title { font-size: 18px; font-weight: bold; color: #1a1a1a; margin-bottom: 10px; border-bottom: 2px solid #1a1a1a; padding-bottom: 5px; }
+                    .field { margin-bottom: 10px; }
+                    .label { font-weight: bold; color: #666; }
+                    .value { margin-top: 3px; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h2>New Job Application</h2>
+                        <p>Position: ${data.position}</p>
+                    </div>
+                    <div class="content">
+                        <div class="section">
+                            <div class="section-title">Personal Information</div>
+                            <div class="field">
+                                <div class="label">Full Name:</div>
+                                <div class="value">${data.name}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Email:</div>
+                                <div class="value">${data.email}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Phone:</div>
+                                <div class="value">${data.phone}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Location:</div>
+                                <div class="value">${data.location || 'Not provided'}</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Role Details</div>
+                            <div class="field">
+                                <div class="label">Position:</div>
+                                <div class="value">${data.position}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Notice Period / Availability:</div>
+                                <div class="value">${data.noticePeriod}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Expected Salary Range:</div>
+                                <div class="value">${data.salary || 'Not provided'}</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Experience & Skills</div>
+                            <div class="field">
+                                <div class="label">Years of Experience:</div>
+                                <div class="value">${data.experience}</div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Portfolio / GitHub / LinkedIn:</div>
+                                <div class="value"><a href="${data.portfolio}">${data.portfolio}</a></div>
+                            </div>
+                            <div class="field">
+                                <div class="label">Key Skills:</div>
+                                <div class="value">${data.skills || 'Not provided'}</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Qualification</div>
+                            <div class="field">
+                                <div class="label">Why join Posilenz:</div>
+                                <div class="value">${data.qualification || 'Not provided'}</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="label">Resume:</div>
+                            <div class="value">${data.resume ? 'Attached' : 'Not provided'}</div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `;
+
+    try {
+        // Prepare email options
+        const emailOptions: any = {
+            to: process.env.EMAIL_TO || 'info@posilenz.com',
+            subject: `New Job Application: ${data.position} - ${data.name}`,
+            html: emailHtml,
+            replyTo: data.email,
+        };
+
+        // Attach resume if present
+        if (data.resume && data.resume.size > 0) {
+            const buffer = Buffer.from(await data.resume.arrayBuffer());
+            emailOptions.attachments = [
+                {
+                    filename: data.resume.name,
+                    content: buffer,
+                    contentType: data.resume.type,
+                },
+            ];
+        }
+
+        await sendEmail(emailOptions);
+
+        return { success: true, message: "Application submitted successfully!" };
+    } catch (error) {
+        console.error("Error sending application email:", error);
+        throw new Error("Failed to submit application. Please try again later.");
+    }
 }
 
 export async function subscribeNewsletter(formData: FormData) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const email = formData.get("email");
+    const email = formData.get("email") as string;
     console.log("Newsletter Subscription:", email);
 
-    return { success: true, message: "Subscribed successfully!" };
+    const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #1a1a1a; color: white; padding: 20px; text-align: center; }
+                    .content { background-color: #f9f9f9; padding: 20px; margin: 20px 0; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h2>New Newsletter Subscription</h2>
+                    </div>
+                    <div class="content">
+                        <p><strong>Email:</strong> ${email}</p>
+                    </div>
+                </div>
+            </body>
+        </html>
+    `;
+
+    try {
+        await sendEmail({
+            to: process.env.EMAIL_TO || 'info@posilenz.com',
+            subject: 'New Newsletter Subscription',
+            html: emailHtml,
+        });
+
+        return { success: true, message: "Subscribed successfully!" };
+    } catch (error) {
+        console.error("Error sending newsletter subscription:", error);
+        throw new Error("Failed to subscribe. Please try again later.");
+    }
 }

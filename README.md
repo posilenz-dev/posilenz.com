@@ -1,24 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project for Posilenz, featuring intelligent systems and AI solutions.
+
+## Features
+
+- 🏠 Modern landing page with GSAP animations
+- 📝 Blog system with dynamic routing
+- 💼 Careers page with job application form
+- 📧 Contact form with SMTP email functionality
+- 📎 File attachment support for job applications
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
+```
+
+### 2. Configure Email (Required for Contact & Application Forms)
+
+Create a `.env.local` file in the root directory:
+
+```env
+SMTP_HOST=smtp.your-provider.com
+SMTP_PORT=587
+SMTP_USER=your-email@example.com
+SMTP_PASSWORD=your-password
+EMAIL_FROM=noreply@posilenz.com
+EMAIL_TO=info@posilenz.com
+```
+
+For detailed SMTP setup instructions for various providers (Gmail, SendGrid, AWS SES, etc.), see [SMTP_SETUP.md](./SMTP_SETUP.md).
+
+### 3. Test Email Configuration (Optional)
+
+```bash
+pnpm test:email
+```
+
+This will send a test email to verify your SMTP configuration is working correctly.
+
+### 4. Run Development Server
+
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
