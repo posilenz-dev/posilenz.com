@@ -21,9 +21,9 @@ export default function Hero() {
     });
 
     return (
-        <section id="hero" className="hero-container section">
+        <section id="hero" className="hero-container section flex items-center justify-center">
             <div className="container mx-auto flex flex-col items-center justify-center">
-                <div className="hero-content">
+                <div className="hero-content w-full">
                     <div className="hero-interactive">
                         {/* SVG Loader Pattern Text (shown by default) */}
                         <div className="hero-loader-text">
@@ -58,7 +58,7 @@ export default function Hero() {
                             <Image
                                 src="/images/mob-hero-text.png"
                                 alt="Posilenz Text Hover"
-                                width={400}
+                                width={800}
                                 height={100}
                                 className="mob w-full h-auto"
                                 priority

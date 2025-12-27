@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import About from "@/components/landing/About";
@@ -12,6 +13,25 @@ import Contact from "@/components/landing/Contact";
 import Footer from "@/components/landing/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    // Handle hash navigation from other pages
+    const handleHashScroll = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        // Wait for hydration and layout
+        setTimeout(() => {
+          const id = hash.replace("#", "");
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
+      }
+    };
+
+    handleHashScroll();
+  }, []);
+
   return (
     <main>
       <Navbar />
