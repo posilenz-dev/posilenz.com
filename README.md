@@ -1,22 +1,17 @@
 # Posilenz Website
 
-> Modern Next.js website for Posilenz - Intelligent Systems & AI Solutions
+Modern Next.js website for Posilenz - Intelligent Systems & AI Solutions
 
-Built with Next.js 16, React 19, TypeScript, Tailwind CSS, GSAP animations, Keystatic CMS, and Nodemailer.
+**Tech Stack:** Next.js 16, React 19, TypeScript, Tailwind CSS, GSAP, Keystatic CMS, Nodemailer
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# Install dependencies
 pnpm install
-
-# Configure email (see Email Setup below)
 cp .env.local.template .env.local
 # Edit .env.local with your SMTP credentials
-
-# Run development server
 pnpm dev
 ```
 
@@ -26,21 +21,20 @@ Visit `http://localhost:3000`
 
 ## ✨ Features
 
-- 🎨 **Modern Landing Page** - GSAP-powered animations, responsive design
-- 📝 **Blog System** - Dynamic routing with static generation
-- 💼 **Careers System** - Managed via Keystatic CMS, syncs across pages
-- 📧 **Contact Form** - SMTP email with HTML formatting
-- 📎 **Job Applications** - PDF resume attachment support
-- 🔐 **Type-Safe** - Full TypeScript coverage
-- ⚡ **Performance** - Optimized builds, image optimization
+- **Landing Page** - GSAP animations, responsive design
+- **Blog System** - Static generation with dynamic routing
+- **Careers CMS** - Keystatic-powered job management
+- **Contact Form** - SMTP email with HTML formatting
+- **Job Applications** - PDF resume attachment support
+- **Type-Safe** - Full TypeScript coverage
 
 ---
 
-## 📧 Email Configuration
+## 📧 Email Setup
 
-### Quick Setup
+### Environment Variables
 
-1. **Create `.env.local`:**
+Create `.env.local`:
 ```env
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
@@ -50,100 +44,68 @@ EMAIL_FROM=your-email@gmail.com
 EMAIL_TO=info@posilenz.com
 ```
 
-2. **Test Email:**
-```bash
-pnpm test:email
-```
-
-### Supported Providers
-
-| Provider | Port | Best For | Free Tier |
-|----------|------|----------|-----------|
-| Gmail | 587 | Testing | 500/day |
-| SendGrid | 587 | Production | 100/day |
-| AWS SES | 587 | Scale | $0.10/1000 |
-| Mailgun | 587 | Enterprise | 5,000/month |
-
-### Gmail Setup (Fastest)
+### Gmail (Recommended for Development)
 
 1. Enable 2FA: [Google Account Security](https://myaccount.google.com/security)
 2. Generate App Password: [App Passwords](https://myaccount.google.com/apppasswords)
-3. Use the 16-character password in `.env.local`
+3. Use 16-character password in `.env.local`
 
-### SendGrid Setup (Production)
+### SendGrid (Production)
 
-1. Sign up: [SendGrid](https://sendgrid.com)
-2. Create API key
-3. Configuration:
 ```env
 SMTP_HOST=smtp.sendgrid.net
 SMTP_USER=apikey
-SMTP_PASSWORD=<your-api-key>
+SMTP_PASSWORD=<your-sendgrid-api-key>
 ```
 
-### Email Features
+Free tier: 100 emails/day. Sign up: [SendGrid](https://sendgrid.com)
 
-**Contact Form** (`/`)
-- Sends to `EMAIL_TO` with reply-to set to sender
-- HTML formatted with contact details
+### Test Configuration
 
-**Job Application** (`/careers`)
-- Comprehensive application data
-- PDF resume attachment (up to 10MB)
-- Professional multi-section HTML format
+```bash
+pnpm test:email
+```
 
 ---
 
 ## 🎯 Keystatic CMS
 
-### Access Admin Panel
+### Access Admin
 
 ```
 http://localhost:3000/keystatic
 ```
 
-### Managing Careers
+### Managing Jobs
 
-**Create Job:**
-1. Go to `/keystatic` → Careers → Create Entry
-2. Fill in all fields (title, intro, location, etc.)
-3. Add responsibilities, skills, and qualification sections
-4. Set display order and active status
-5. Click Create
+1. **Create:** `/keystatic` → Careers → Create Entry → Fill fields → Create
+2. **Edit:** Click job → Edit → Update
+3. **Hide:** Uncheck "Active" → Update
 
-**Edit Job:**
-- Click on job → Edit → Update
+### Job Fields
 
-**Hide Job:**
-- Uncheck "Active" → Update (preserves data)
+- **Basic:** Title, intro, location, employment type, experience
+- **Rich Text:** Who You Are, Role Overview, Why Join (supports formatting)
+- **Lists:** Key Responsibilities, Skills & Experience, What You'll Bring
+- **Meta:** Display order, active toggle, slug
 
-### Job Schema
-
-Each job posting includes:
-
-- **Basic Info**: Title, intro, location, employment type, experience
-- **Rich Content**: Who You Are, Role Overview, Why Join (with formatting)
-- **Lists**: Key Responsibilities, Skills & Experience, What You'll Bring
-- **Metadata**: Display order, active/inactive toggle, slug
-
-### Content Storage
-
-Jobs stored in `/content/careers/[slug]/`:
-```
-/content/careers/senior-developer/
-  ├── index.yaml           # Metadata + lists
-  ├── whoYouAre.mdoc       # Rich text
-  ├── roleOverview.mdoc    # Rich text
-  ├── whyJoin.mdoc         # Rich text
-  └── content.mdoc         # Additional content
-```
-
-### Auto-Sync
+### Auto-Sync Locations
 
 Jobs automatically appear on:
-- **Homepage** (`/#team-section`) - Job titles with links
-- **Careers Page** (`/careers`) - Full expandable listings
-- **Application Form** - Position dropdown
+- Homepage (`/#team`) - Job list with links
+- Careers page (`/careers`) - Full listings
+- Application form - Position dropdown
+
+### Storage
+
+```
+/content/careers/[slug]/
+  ├── index.yaml           # Metadata + lists
+  ├── whoYouAre.mdoc       # Rich content
+  ├── roleOverview.mdoc    # Rich content
+  ├── whyJoin.mdoc         # Rich content
+  └── content.mdoc         # Additional content
+```
 
 ---
 
@@ -152,11 +114,11 @@ Jobs automatically appear on:
 ### Scripts
 
 ```bash
-pnpm dev          # Start dev server (localhost:3000)
+pnpm dev          # Dev server (localhost:3000)
 pnpm build        # Production build
-pnpm start        # Start production server
-pnpm lint         # Run ESLint
-pnpm test:email   # Test SMTP configuration
+pnpm start        # Production server
+pnpm lint         # ESLint
+pnpm test:email   # Test SMTP
 ```
 
 ### Project Structure
@@ -164,76 +126,62 @@ pnpm test:email   # Test SMTP configuration
 ```
 posilenz.com/
 ├── app/
-│   ├── actions.ts                 # Server actions (forms)
-│   ├── api/keystatic/            # Keystatic API routes
-│   ├── blog/                     # Blog pages
-│   ├── careers/                  # Careers page
-│   ├── keystatic/                # CMS admin UI
-│   └── styles/                   # Page-specific CSS
+│   ├── actions.ts            # Server actions
+│   ├── api/keystatic/        # CMS API
+│   ├── blog/                 # Blog pages
+│   ├── careers/              # Careers page
+│   ├── keystatic/            # CMS admin
+│   └── styles/               # CSS
 ├── components/
-│   ├── blog/                     # Blog components
-│   ├── careers/                  # Career components
-│   └── landing/                  # Landing page sections
-├── content/
-│   └── careers/                  # Keystatic career data
+│   ├── blog/                 # Blog components
+│   ├── careers/              # Career components
+│   └── landing/              # Landing sections
+├── content/careers/          # Job data (YAML/MDOC)
 ├── lib/
-│   ├── blogData.ts               # Blog posts data
-│   ├── keystatic.ts              # Keystatic reader
-│   ├── mailer.ts                 # Email configuration
-│   └── utils.ts                  # Utilities
-├── public/images/                # Static assets
-├── keystatic.config.ts           # CMS configuration
-└── .env.local                    # Environment variables
+│   ├── blogData.ts           # Blog posts (hardcoded)
+│   ├── keystatic.ts          # CMS reader
+│   ├── mailer.ts             # Email config
+│   └── utils.ts              # Utilities
+└── public/images/            # Static assets
 ```
 
-### Tech Stack
+---
 
-**Framework:** Next.js 16.1 (App Router, Turbopack)
-**UI:** React 19, TypeScript, Tailwind CSS
-**Animations:** GSAP 3.14
-**CMS:** Keystatic (file-based)
-**Email:** Nodemailer
-**Icons:** Lucide React
+## 📝 Content Management
+
+### Blog Posts
+
+Edit `/lib/blogData.ts`:
+
+```typescript
+{
+  id: "4",
+  slug: "your-post-slug",
+  number: "28",
+  date: "Dec 2025",
+  title: "Your Post Title",
+  excerpt: "Brief description...",
+  image: "/images/your-image.png",
+  content: `<p class="article-paragraph">Your HTML content...</p>`
+}
+```
+
+### Careers
+
+Use Keystatic admin at `/keystatic` (recommended) or edit YAML in `/content/careers/`
 
 ---
 
 ## 🚢 Deployment
 
-### Vercel (Recommended)
+### Vercel
 
 1. Push to GitHub
-2. Import project in Vercel
-3. Add environment variables:
-   - `SMTP_HOST`
-   - `SMTP_PORT`
-   - `SMTP_USER`
-   - `SMTP_PASSWORD`
-   - `EMAIL_FROM`
-   - `EMAIL_TO`
+2. Import in Vercel
+3. Add environment variables (SMTP_*)
 4. Deploy
 
-### Netlify
-
-1. Connect repository
-2. Build command: `pnpm build`
-3. Publish directory: `.next`
-4. Add environment variables in Site Settings
-5. Deploy
-
-### Docker
-
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install --frozen-lockfile
-COPY . .
-RUN pnpm build
-EXPOSE 3000
-CMD ["pnpm", "start"]
-```
-
-### Environment Variables (Production)
+### Environment Variables
 
 Required:
 ```env
@@ -245,154 +193,79 @@ EMAIL_FROM=
 EMAIL_TO=
 ```
 
-Optional:
-```env
-NODE_ENV=production
-NEXT_PUBLIC_SITE_URL=https://yourdomain.com
-```
-
 ---
 
 ## 🐛 Troubleshooting
 
 ### Email Issues
 
-**"Error sending email"**
-- ✅ Verify `.env.local` exists and has correct values
-- ✅ Test with: `pnpm test:email`
-- ✅ Check SMTP credentials
-- ✅ Ensure port 587 is not blocked
+**Error sending email**
+- Verify `.env.local` exists
+- Run `pnpm test:email`
+- Check SMTP credentials
 
-**Gmail "Invalid credentials"**
-- Must use App Password (not regular password)
+**Gmail invalid credentials**
+- Use App Password (not regular password)
 - Enable 2FA first
-- Generate new app password
 
 **Resume not attaching**
-- File must be PDF format
-- Max size: 10MB
-- Form field name must be "resume"
-
-**Emails go to spam**
-- Use authenticated SMTP provider
-- Add SPF/DKIM records for domain
-- Ask recipients to whitelist
+- Must be PDF, max 10MB
+- Form field: `name="resume"`
 
 ### Keystatic Issues
 
-**Admin panel blank**
-- Hard refresh: `Cmd+Shift+R` or `Ctrl+Shift+R`
-- Check browser console for errors
-- Verify `/content/careers/` folder exists
+**Blank admin panel**
+- Hard refresh: `Cmd+Shift+R`
+- Check browser console
+- Verify `/content/careers/` exists
 
-**Jobs not appearing**
-- Check job "Active" status in Keystatic
-- Verify YAML files in `/content/careers/[slug]/`
-- Clear Next.js cache: `rm -rf .next && pnpm dev`
-
-**Cannot edit job**
-- Ensure slug field is set
-- Check file permissions on `/content/` folder
+**Jobs not showing**
+- Check "Active" status
+- Verify YAML files exist
+- Clear cache: `rm -rf .next && pnpm dev`
 
 ### Build Issues
 
 **TypeScript errors**
 ```bash
-pnpm build
+pnpm build  # Check error messages
 ```
-Check error messages and fix type issues
 
 **Cache issues**
 ```bash
-rm -rf .next node_modules
-pnpm install
-pnpm build
+rm -rf .next node_modules && pnpm install && pnpm build
 ```
 
 ---
 
-## 📝 Content Management
+## 📦 Key Dependencies
 
-### Adding a Blog Post
-
-Edit `/lib/blogData.ts` and add:
-
-```typescript
-{
-  slug: "your-post-slug",
-  title: "Your Post Title",
-  excerpt: "Brief description...",
-  content: "Full content...",
-  author: "Author Name",
-  date: "Dec 15, 2024",
-  readTime: "5 min read",
-  category: "Technology"
-}
-```
-
-### Managing Careers
-
-Use Keystatic admin at `/keystatic` (recommended) or edit YAML files directly in `/content/careers/`.
-
-### Updating Contact Email
-
-Change `EMAIL_TO` in `.env.local` to receive form submissions at different address.
+- `next` - React framework
+- `react` / `react-dom` - UI library
+- `typescript` - Type safety
+- `@keystatic/core` / `@keystatic/next` - CMS
+- `nodemailer` - Email
+- `gsap` / `@gsap/react` - Animations
+- `tailwindcss` - Styling
+- `lucide-react` - Icons
 
 ---
 
 ## 🔒 Security
 
-- ✅ `.env.local` in `.gitignore` (never commit credentials)
-- ✅ Server actions for form handling (no API exposure)
-- ✅ File upload validation (PDF only, 10MB max)
-- ✅ SMTP authentication required
-- ✅ Type-safe with TypeScript
+- `.env.local` in `.gitignore`
+- Server actions (no exposed APIs)
+- PDF validation (10MB max)
+- SMTP authentication required
 
 ### Production Checklist
 
-- [ ] Set strong SMTP password
-- [ ] Use production-grade SMTP provider (SendGrid/AWS SES)
+- [ ] Use production SMTP (SendGrid/AWS SES)
 - [ ] Configure SPF/DKIM records
 - [ ] Set up error monitoring
 - [ ] Enable rate limiting on forms
-- [ ] Review and update CSP headers
+- [ ] Review CSP headers
 
 ---
 
-## 📦 Dependencies
-
-### Core
-- `next` - React framework
-- `react`, `react-dom` - UI library
-- `typescript` - Type safety
-
-### Features
-- `@keystatic/core`, `@keystatic/next` - CMS
-- `nodemailer` - Email functionality
-- `gsap`, `@gsap/react` - Animations
-- `lucide-react` - Icons
-
-### Styling
-- `tailwindcss` - Utility-first CSS
-- `clsx`, `tailwind-merge` - Class management
-- `tw-animate-css` - Animation utilities
-
----
-
-## 📄 License
-
-Private project for Posilenz.
-
----
-
-## 🤝 Support
-
-For issues or questions:
-1. Check troubleshooting section above
-2. Review error messages in browser console
-3. Test SMTP with `pnpm test:email`
-4. Check Keystatic admin for content issues
-
----
-
-**Built with ❤️ using Next.js and modern web technologies**
+**Built with Next.js and modern web technologies**
