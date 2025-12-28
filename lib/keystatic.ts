@@ -7,7 +7,7 @@ export const reader = createReader('', config);
 // Career type definition
 export interface Career {
     slug: string;
-    title: string | null;
+    title: string;
     intro: string;
     location: 'remote' | 'hybrid' | 'onsite';
     employmentType: 'full-time' | 'part-time' | 'contract';
@@ -28,7 +28,7 @@ export async function getCareers(): Promise<Career[]> {
     const careers = await reader.collections.careers.all();
 
     const activeCareers = careers
-        .filter((career) => career.entry.isActive)
+        .filter((career) => career.entry.isActive && career.entry.title) // Filter out careers without titles
         .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0));
 
     // Read document content for each career
@@ -43,7 +43,7 @@ export async function getCareers(): Promise<Career[]> {
 
             return {
                 slug: career.entry.slug || career.slug,
-                title: career.entry.title || career.entry.slug || career.slug,
+                title: career.entry.title as string, // Safe assertion since we filtered nulls
                 intro: career.entry.intro,
                 location: career.entry.location,
                 employmentType: career.entry.employmentType,
@@ -68,7 +68,7 @@ export async function getCareers(): Promise<Career[]> {
 export async function getCareerBySlug(slug: string): Promise<Career | null> {
     try {
         const career = await reader.collections.careers.read(slug);
-        if (!career) return null;
+        if (!career || !career.title) return null; // Return null if no career or no title
 
         const [whoYouAre, roleOverview, whyJoin, content] = await Promise.all([
             career.whoYouAre(),
@@ -79,7 +79,7 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
 
         return {
             slug: career.slug || slug,
-            title: career.title || career.slug || slug,
+            title: career.title as string, // Safe assertion since we checked for null above
             intro: career.intro,
             location: career.location,
             employmentType: career.employmentType,
