@@ -1,0 +1,33 @@
+slug: senior-developer
+title: Senior Developer
+intro: >-
+  We're looking for an experienced Senior Developer who can build smart,
+  scalable digital systems, turning complex requirements into high-performing,
+  elegant solutions.
+location: remote
+employmentType: full-time
+experience: 6+ Years
+displayOrder: 1
+isActive: true
+keyResponsibilities:
+  - Lead development of UI revamp for existing ERP modules
+  - Architect and implement scalable backend systems using modern frameworks
+  - Build clean, reusable components for long-term growth
+  - Implement improvements and system optimizations
+  - Collaborate with designers to transform UX into pixel-perfect UI
+  - Ensure database security, performance, and code quality standards
+  - Mentor junior developers and conduct code reviews
+  - Contribute to automation, CI/CD pipelines, and deployment workflows
+skillsExperience:
+  - Strong proficiency in JavaScript/TypeScript, React / Angular / Vue
+  - Backend experience with Node.js, .NET Core or Java
+  - Solid understanding of SQL and NoSQL databases
+  - API integration experience (RESTful services, microservices)
+  - Experience with code reviews, Git workflows, testing frameworks
+  - Familiarity with cloud platforms (AWS / Azure)
+  - ERP or large enterprise system exposure is a huge plus
+whatYoullBring:
+  - Ownership mindset
+  - Ability to think like a system architect
+  - A passion for clean workflow, speed, and UI quality
+  - Curiosity toward automation and intelligent system design

@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { submitApplication } from "@/app/actions";
 
-export default function ApplicationForm() {
+interface ApplicationFormProps {
+    careers: {
+        slug: string;
+        title: string;
+    }[];
+}
+
+export default function ApplicationForm({ careers }: ApplicationFormProps) {
     const [fileName, setFileName] = useState("Resume / CV Upload (PDF only, 5-10MB max)");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,9 +61,11 @@ export default function ApplicationForm() {
                         <div className="form-fields">
                             <select name="position" className="form-input" required defaultValue="" disabled={isSubmitting}>
                                 <option value="" disabled>Position Applying For *</option>
-                                <option value="senior-developer">Senior Developer</option>
-                                <option value="graphic-designer">Graphic Designer</option>
-                                <option value="social-media-expert">Social Media Expert</option>
+                                {careers.map((career) => (
+                                    <option key={career.slug} value={career.slug}>
+                                        {career.title}
+                                    </option>
+                                ))}
                             </select>
                             <input name="noticePeriod" type="text" className="form-input" placeholder="Notice Period / Availability *" required disabled={isSubmitting} />
                             <input name="salary" type="text" className="form-input" placeholder="Expected Salary Range (Optional)" disabled={isSubmitting} />
