@@ -13,6 +13,8 @@ interface ApplicationFormProps {
 export default function ApplicationForm({ careers }: ApplicationFormProps) {
     const [fileName, setFileName] = useState("Resume / CV Upload (PDF only, 5-10MB max)");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [applicantName, setApplicantName] = useState("");
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -26,8 +28,10 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
 
         try {
             const formData = new FormData(e.currentTarget);
+            const name = formData.get("name") as string;
+            setApplicantName(name.split(" ")[0]); // Get first name
             await submitApplication(formData);
-            alert("Thank you for your application! We will review it and get back to you soon.");
+            setShowSuccess(true);
             (e.target as HTMLFormElement).reset();
             setFileName("Resume / CV Upload (PDF only, 5-10MB max)");
         } catch (error) {
@@ -38,12 +42,41 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
         }
     };
 
-    return (
-        <section className="application-section">
-            <div className="application-container">
-                <h2 className="application-title">Start Your Application</h2>
+    const closeSuccessModal = () => {
+        setShowSuccess(false);
+    };
 
-                <form className="application-form" onSubmit={handleSubmit}>
+    return (
+        <>
+            {/* Success Modal */}
+            {showSuccess && (
+                <div className="success-modal-overlay" onClick={closeSuccessModal}>
+                    <div className="success-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="success-icon">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="32" cy="32" r="32" fill="#1D54DD" />
+                                <path d="M20 32L28 40L44 24" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+                        <h3 className="success-title">Thank You, {applicantName}!</h3>
+                        <p className="success-message">
+                            Your application has been successfully submitted. We've sent a confirmation email to your inbox.
+                        </p>
+                        <p className="success-submessage">
+                            Our team will review your application and get back to you within 5-7 business days.
+                        </p>
+                        <button className="success-btn" onClick={closeSuccessModal}>
+                            Got it
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <section className="application-section">
+                <div className="application-container">
+                    <h2 className="application-title">Start Your Application</h2>
+
+                    <form className="application-form" onSubmit={handleSubmit}>
                     {/* Personal Information */}
                     <div className="form-group">
                         <h3 className="form-group-title">Personal Information</h3>
@@ -119,7 +152,8 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
                         {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
                 </form>
-            </div>
-        </section>
+                </div>
+            </section>
+        </>
     );
 }
