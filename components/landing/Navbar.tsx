@@ -74,7 +74,19 @@ export default function Navbar() {
                     const element = document.getElementById(targetId);
                     if (element) {
                         window.history.replaceState(null, "", href);
-                        element.scrollIntoView({ behavior: "smooth" });
+                        // Use scrollTo with offset for better positioning on mobile
+                        const isMobile = window.innerWidth <= 768;
+                        const navbarHeight = 70;
+                        const elementRect = element.getBoundingClientRect();
+                        const absoluteElementTop = elementRect.top + window.pageYOffset;
+                        // Add extra offset for about section on mobile to skip the animated background
+                        const extraOffset = (isMobile && targetId === "about") ? 480 : 0;
+                        const offsetPosition = absoluteElementTop - navbarHeight + extraOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
                     }
                 }, 50);
             }
