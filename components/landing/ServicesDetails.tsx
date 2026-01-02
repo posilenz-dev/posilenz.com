@@ -78,8 +78,31 @@ export default function ServicesDetails() {
     const handleThumbClick = (index: number) => {
         const isDesktop = window.innerWidth > 1000;
         // Only allow click navigation on mobile
-        if (!isDesktop) {
+        if (!isDesktop && containerRef.current) {
             updateActiveService(index);
+
+            // Calculate scroll position based on service index
+            const scrollTriggerInstance = ScrollTrigger.getAll().find(
+                (st) => st.trigger === containerRef.current
+            );
+
+            if (scrollTriggerInstance) {
+                // Calculate the target progress for each service
+                const progressMap = [0.1, 0.35, 0.6, 0.85];
+                const targetProgress = progressMap[index];
+
+                // Calculate the scroll position
+                const start = scrollTriggerInstance.start;
+                const end = scrollTriggerInstance.end;
+                const targetScroll = start + (end - start) * targetProgress;
+
+                // Scroll to the calculated position
+                gsap.to(window, {
+                    scrollTo: { y: targetScroll, autoKill: false },
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
         }
     };
 
