@@ -52,15 +52,15 @@ export default function Hero() {
                                 alt="Posilenz Text"
                                 width={800}
                                 height={200}
-                                className="desktop w-full h-auto"
+                                className="desktop h-auto"
                                 priority
                             />
                             <Image
                                 src="/images/mob-hero-text.png"
                                 alt="Posilenz Text"
-                                width={400}
+                                width={600}
                                 height={100}
-                                className="mob w-full h-auto"
+                                className="mob w-full h-auto !p-[24px]"
                                 priority
                             />
                         </div>
@@ -72,15 +72,15 @@ export default function Hero() {
                                 alt="Posilenz Text Hover"
                                 width={800}
                                 height={200}
-                                className="desktop w-full h-auto"
+                                className="desktop h-auto"
                                 priority
                             />
                             <Image
                                 src="/images/mob-hero-text.png"
                                 alt="Posilenz Text Hover"
-                                width={800}
+                                width={600}
                                 height={100}
-                                className="mob w-full h-auto"
+                                className="mob w-full h-auto !p-[30px]"
                                 priority
                             />
                         </div>

@@ -9,6 +9,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [visible, setVisible] = useState(true);
     const lastScrollY = useRef(0);
+    const savedScrollY = useRef(0);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -17,21 +18,8 @@ export default function Navbar() {
             // Determine if scrolled past threshold
             setScrolled(currentScrollY > 50);
 
-            // Show/hide navbar based on scroll direction (only on mobile)
-            if (window.innerWidth <= 768) {
-                // Always show at top of page
-                if (currentScrollY < 100) {
-                    setVisible(true);
-                } else if (currentScrollY < lastScrollY.current) {
-                    // Scrolling up - show navbar
-                    setVisible(true);
-                } else if (currentScrollY > lastScrollY.current + 10) {
-                    // Scrolling down (with threshold) - hide navbar
-                    setVisible(false);
-                }
-            } else {
-                setVisible(true);
-            }
+            // Always keep navbar visible (hamburger should be static throughout the app)
+            setVisible(true);
 
             lastScrollY.current = currentScrollY;
         };
@@ -41,32 +29,68 @@ export default function Navbar() {
     }, []);
 
     const toggleMenu = () => {
+        if (!isMenuOpen) {
+            // Opening menu - save current scroll position
+            savedScrollY.current = window.scrollY;
+            document.body.style.top = `-${savedScrollY.current}px`;
+            document.body.classList.add("menu-open");
+        } else {
+            // Closing menu - restore scroll position
+            document.body.classList.remove("menu-open");
+            document.body.style.top = "";
+            window.scrollTo(0, savedScrollY.current);
+        }
         setIsMenuOpen(!isMenuOpen);
-        document.body.classList.toggle("menu-open", !isMenuOpen);
     };
 
     const closeMenu = () => {
         setIsMenuOpen(false);
         document.body.classList.remove("menu-open");
+        document.body.style.top = "";
+        window.scrollTo(0, savedScrollY.current);
     };
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        // Close menu with animation before navigation
+        // Close menu and restore body state
         setIsMenuOpen(false);
-        setTimeout(() => {
-            document.body.classList.remove("menu-open");
-        }, 300);
+        document.body.classList.remove("menu-open");
+        document.body.style.top = "";
 
-        // For hash links on the same page, prevent adding to browser history
+        // For hash links on the home page
         if (href.startsWith("/#")) {
-            e.preventDefault();
             const targetId = href.replace("/#", "");
-            const element = document.getElementById(targetId);
-            if (element) {
-                // Use replaceState instead of pushState to avoid polluting history
-                window.history.replaceState(null, "", href);
-                element.scrollIntoView({ behavior: "smooth" });
+
+            // Check if we're on the home page
+            const isHomePage = window.location.pathname === "/" || window.location.pathname === "";
+
+            if (isHomePage) {
+                // On home page - scroll to element
+                e.preventDefault();
+                // First restore scroll position, then scroll to target
+                window.scrollTo(0, savedScrollY.current);
+
+                // Small delay to ensure body is restored before scrolling
+                setTimeout(() => {
+                    const element = document.getElementById(targetId);
+                    if (element) {
+                        window.history.replaceState(null, "", href);
+                        // Use scrollTo with offset for better positioning on mobile
+                        const isMobile = window.innerWidth <= 768;
+                        const navbarHeight = 70;
+                        const elementRect = element.getBoundingClientRect();
+                        const absoluteElementTop = elementRect.top + window.pageYOffset;
+                        // Add extra offset for about section on mobile to skip the animated background
+                        const extraOffset = (isMobile && targetId === "about") ? 480 : 0;
+                        const offsetPosition = absoluteElementTop - navbarHeight + extraOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                }, 50);
             }
+            // If not on home page, let the Link component handle navigation to /#section
         }
     };
 

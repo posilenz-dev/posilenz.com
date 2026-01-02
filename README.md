@@ -70,7 +70,7 @@ SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
 EMAIL_FROM=your-email@gmail.com
-EMAIL_TO=recipient@example.com
+EMAIL_TO=recipient1@example.com,recipient2@example.com
 ```
 
 ## Scripts
