@@ -368,6 +368,11 @@
         min-height: auto;
     }
 
+    .featured-post-image {
+        height: 250px;
+        min-height: 250px;
+    }
+
     .featured-post-content {
         padding: 32px 24px;
     }

@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -13,6 +13,9 @@ if (typeof window !== "undefined") {
 export default function ServicesDetails() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeService, setActiveService] = useState(0);
+    const touchStartX = useRef<number>(0);
+    const touchEndX = useRef<number>(0);
+    const totalServices = 4;
 
     useGSAP(
         () => {
@@ -63,17 +66,51 @@ export default function ServicesDetails() {
         { scope: containerRef, dependencies: [] } // Careful with state dependencies to avoid resetting animation
     );
 
+    const updateActiveService = useCallback((index: number) => {
+        setActiveService(index);
+        const serviceItems = document.querySelectorAll(".service-detail-item");
+        serviceItems.forEach((item, i) => {
+            if (i === index) item.classList.add("active");
+            else item.classList.remove("active");
+        });
+    }, []);
+
     const handleThumbClick = (index: number) => {
         const isDesktop = window.innerWidth > 1000;
         // Only allow click navigation on mobile
         if (!isDesktop) {
-            setActiveService(index);
-            const serviceItems = document.querySelectorAll(".service-detail-item");
-            serviceItems.forEach((item, i) => {
-                if (i === index) item.classList.add("active");
-                else item.classList.remove("active");
-            });
+            updateActiveService(index);
         }
+    };
+
+    // Touch handlers for swipe navigation on mobile
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        touchEndX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+        const isDesktop = window.innerWidth > 1000;
+        if (isDesktop) return;
+
+        const distance = touchStartX.current - touchEndX.current;
+        const minSwipeDistance = 50;
+
+        if (Math.abs(distance) > minSwipeDistance) {
+            if (distance > 0 && activeService < totalServices - 1) {
+                // Swipe left - next service
+                updateActiveService(activeService + 1);
+            } else if (distance < 0 && activeService > 0) {
+                // Swipe right - previous service
+                updateActiveService(activeService - 1);
+            }
+        }
+
+        touchStartX.current = 0;
+        touchEndX.current = 0;
     };
 
     return (
@@ -97,7 +134,12 @@ export default function ServicesDetails() {
                 ))}
             </div>
 
-            <div className="service-details-wrapper">
+            <div
+                className="service-details-wrapper"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+            >
                 {/* Service 1: IT Consulting */}
                 <div className={`service-detail-item ${activeService === 0 ? "active" : ""}`}>
                     <div className="service-detail-content">
