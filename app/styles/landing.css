@@ -122,6 +122,11 @@ body.menu-open {
   padding: 8px;
   z-index: 1001;
 }
+@supports not (gap: 1px) {
+  .hamburger .hamburger-line:not(:first-child) {
+    margin-top: 5px;
+  }
+}
 .hamburger:hover .hamburger-line {
   background: #000;
 }
@@ -168,23 +173,52 @@ body.menu-open {
   list-style: none;
   gap: var(--spacing-1xl);
 }
+/* Safari 14 fallback - only apply margins when gap is not supported */
+@supports not (gap: 1px) {
+  .nav-links li {
+    margin-left: var(--spacing-1xl);
+  }
+  .nav-links li:first-child {
+    margin-left: 0;
+  }
+}
 .nav-links a {
   text-decoration: none;
   color: #0A1630;
   font-weight: 500;
   font-family: var(--font-body);
   font-size: clamp(14px, 1.5vw, 14px);
-  transition: all var(--transition-fast);
+  transition: color 0.3s ease, transform 0.3s ease;
   font-family: var(--font-heading);
   position: relative;
   padding-bottom: 5px;
 }
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease, left 0.3s ease;
+  border-radius: 1px;
+}
 .nav-links a:hover {
   color: var(--primary-color);
+  transform: translateY(-2px);
+}
+.nav-links a:hover::after {
+  width: 100%;
+  left: 0;
 }
 .nav-links a.active {
   color: var(--primary-color);
   font-weight: 600;
+}
+.nav-links a.active::after {
+  width: 100%;
+  left: 0;
 }
 
 .hero-content {
@@ -193,7 +227,7 @@ body.menu-open {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--spacing-3xl) 10px;
+  padding: var(--spacing-xl) 10px;
   width: 100%;
   flex: 1;
   height: 100%;
@@ -204,7 +238,7 @@ body.menu-open {
   width: 100%;
   max-width: 1000px;
   height: 100px;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   cursor: pointer;
 }
 .hero-interactive .hero-loader-text {
@@ -233,14 +267,25 @@ body.menu-open {
 .hero-interactive .hero-loader-text .mob {
   display: none;
 }
-.hero-interactive:hover .hero-loader-text {
+.hero-interactive:not(.animation-complete):hover .hero-loader-text {
   opacity: 0;
   filter: blur(3px);
 }
-.hero-interactive:hover .hero-loader-text svg {
+.hero-interactive:not(.animation-complete):hover .hero-loader-text svg {
   transform: scale(0);
 }
-.hero-interactive:hover .hero-clear-text {
+.hero-interactive:not(.animation-complete):hover .hero-clear-text {
+  opacity: 1;
+}
+/* After animation completes, keep clear text visible and remove cursor pointer */
+.hero-interactive.animation-complete {
+  cursor: default;
+}
+.hero-interactive.animation-complete .hero-loader-text {
+  opacity: 0;
+  filter: blur(3px);
+}
+.hero-interactive.animation-complete .hero-clear-text {
   opacity: 1;
 }
 .hero-interactive .hero-clear-text {
@@ -307,12 +352,12 @@ body.menu-open {
 }
 
 .hero-subtitle {
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(16px, 2vw, 18px);
   font-family: var(--font-body);
   color: #1E1E1E;
-  max-width: 750px;
-  line-height: 1.6;
-  margin-bottom: var(--spacing-xl);
+  max-width: 700px;
+  line-height: 1.5;
+  margin-bottom: 0;
 }
 
 @keyframes gradientShift {
@@ -431,6 +476,11 @@ body.menu-open {
   align-items: center;
   gap: 5px;
 }
+@supports not (gap: 1px) {
+  .about-cta > *:not(:first-child) {
+    margin-left: 5px;
+  }
+}
 
 .services-section {
   height: auto;
@@ -483,6 +533,7 @@ body.menu-open {
   overflow: hidden;
   position: relative;
   height: 100vh;
+  scroll-margin-top: -100px;
 }
 
 .service-details-wrapper {
@@ -504,12 +555,15 @@ body.menu-open {
   background-color: #000;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 0.8s ease-in-out;
+  visibility: hidden;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
   align-items: flex-end;
   padding-bottom: 180px;
+  will-change: opacity, visibility;
 }
 .service-detail-item.active {
   opacity: 1;
+  visibility: visible;
 }
 .service-detail-item:nth-child(1) {
   background: url(/images/serbg-1.png) center no-repeat;
@@ -536,6 +590,39 @@ body.menu-open {
   text-align: left;
   margin: 0 auto;
   padding: 0 10px;
+}
+
+/* Content animation styles */
+.service-detail-content > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.service-detail-item.active .service-detail-content > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation delays */
+.service-detail-item.active .service-detail-title {
+  transition-delay: 0.1s;
+}
+
+.service-detail-item.active .service-detail-subtitle {
+  transition-delay: 0.2s;
+}
+
+.service-detail-item.active .service-detail-description {
+  transition-delay: 0.3s;
+}
+
+.service-detail-item.active .service-detail-sub {
+  transition-delay: 0.4s;
+}
+
+.service-detail-item.active .service-detail-list {
+  transition-delay: 0.5s;
 }
 
 .service-detail-title {
@@ -578,6 +665,11 @@ body.menu-open {
   flex-direction: column;
   gap: 10px;
 }
+@supports not (gap: 1px) {
+  .service-detail-list > *:not(:first-child) {
+    margin-top: 10px;
+  }
+}
 .service-detail-list li {
   list-style: disc;
 }
@@ -594,6 +686,7 @@ body.menu-open {
   position: fixed;
   bottom: var(--spacing-xl);
   left: 50%;
+  -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   display: flex;
   gap: 15px;
@@ -601,6 +694,11 @@ body.menu-open {
   padding: 0 10px;
   max-width: 1200px;
   width: 100%;
+}
+@supports not (gap: 1px) {
+  .service-nav-thumbs > *:not(:first-child) {
+    margin-left: 15px;
+  }
 }
 
 .service-thumb {
@@ -611,6 +709,20 @@ body.menu-open {
   transition: all var(--transition-fast);
   position: relative;
   padding: 0 var(--spacing-sm);
+  cursor: default;
+  pointer-events: none;
+}
+@supports not (gap: 1px) {
+  .service-thumb > *:not(:first-child) {
+    margin-top: var(--spacing-md);
+  }
+}
+
+@media (max-width: 1000px) {
+  .service-thumb {
+    cursor: pointer;
+    pointer-events: auto;
+  }
 }
 .service-thumb::before {
   content: "";
@@ -623,7 +735,7 @@ body.menu-open {
   transition: background var(--transition-fast);
 }
 .service-thumb.active .thumb-number {
-  color: var(--color-primary);
+  color: var(--white);
 }
 .service-thumb.active .thumb-label {
   color: var(--white);
@@ -631,17 +743,6 @@ body.menu-open {
 .service-thumb.active::before {
   background: var(--white);
   height: 1px;
-}
-.service-thumb.active::after {
-  content: "";
-  position: absolute;
-  top: 15px;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--color-primary);
 }
 
 .thumb-number {
@@ -1047,6 +1148,11 @@ body.menu-open {
   flex-direction: column;
   gap: var(--spacing-md);
 }
+@supports not (gap: 1px) {
+  .join-description > *:not(:first-child) {
+    margin-top: var(--spacing-md);
+  }
+}
 .join-description p {
   font-size: clamp(13px, 1.5vw, 14px);
   color: #1E1E1E;
@@ -1069,6 +1175,11 @@ body.menu-open {
   flex-direction: column;
   gap: var(--spacing-md);
   padding-top: 40px;
+}
+@supports not (gap: 1px) {
+  .job-listings > *:not(:first-child) {
+    margin-top: var(--spacing-md);
+  }
 }
 
 .job-item {
@@ -1135,6 +1246,11 @@ body.menu-open {
   display: flex;
   gap: var(--spacing-md);
 }
+@supports not (gap: 1px) {
+  .insights-tab-head .insights-tabs > *:not(:first-child) {
+    margin-left: var(--spacing-md);
+  }
+}
 .insights-tab-head .insights-tab {
   padding: var(--spacing-sm) var(--spacing-xl);
   background: transparent;
@@ -1173,6 +1289,11 @@ body.menu-open {
   position: relative;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+@supports not (gap: 1px) {
+  .insights-grid > *:not(:first-child) {
+    margin-left: var(--spacing-xl);
+  }
+}
 
 .insight-card-link {
   text-decoration: none;
@@ -1199,7 +1320,10 @@ body.menu-open {
 .insight-card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   opacity: 0;
   transition: opacity var(--transition-fast);
   z-index: 0;
@@ -1222,7 +1346,10 @@ body.menu-open {
 .insight-card::after {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: rgba(0, 0, 0, 0.3);
   opacity: 0;
   transition: opacity var(--transition-fast);
@@ -1284,6 +1411,11 @@ body.menu-open {
   padding-top: var(--spacing-lg);
   border-top: 1px solid #DCDEE0;
 }
+@supports not (gap: 1px) {
+  .insight-footer > *:not(:first-child) {
+    margin-left: var(--spacing-sm);
+  }
+}
 
 .insight-date-number {
   font-size: clamp(18px, 2vw, 20px);
@@ -1301,6 +1433,11 @@ body.menu-open {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-md);
+}
+@supports not (gap: 1px) {
+  .insights-nav > *:not(:first-child) {
+    margin-left: var(--spacing-md);
+  }
 }
 
 .insights-nav-btn {
@@ -1364,6 +1501,11 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
+}
+@supports not (gap: 1px) {
+  .contact-form > *:not(:first-child) {
+    margin-top: var(--spacing-lg);
+  }
 }
 
 .form-group {
@@ -1444,6 +1586,11 @@ body.menu-open {
   align-items: center;
   gap: var(--spacing-md);
 }
+@supports not (gap: 1px) {
+  .footer-logo > *:not(:first-child) {
+    margin-left: var(--spacing-md);
+  }
+}
 
 .footer-logo-text {
   font-size: clamp(20px, 2.5vw, 24px);
@@ -1461,6 +1608,11 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+}
+@supports not (gap: 1px) {
+  .footer-location > *:not(:first-child) {
+    margin-top: var(--spacing-sm);
+  }
 }
 
 .footer-location-title {
@@ -1496,6 +1648,11 @@ body.menu-open {
   display: flex;
   gap: var(--spacing-lg);
 }
+@supports not (gap: 1px) {
+  .footer-social > *:not(:first-child) {
+    margin-left: var(--spacing-lg);
+  }
+}
 
 .footer-social-link {
   color: #6EA7F9;
@@ -1514,6 +1671,11 @@ body.menu-open {
   align-items: center;
   gap: var(--spacing-lg);
   font-size: clamp(12px, 1.2vw, 14px);
+}
+@supports not (gap: 1px) {
+  .footer-legal > *:not(:first-child) {
+    margin-left: var(--spacing-lg);
+  }
 }
 
 .footer-legal-link {
@@ -1674,7 +1836,7 @@ body.menu-open {
     background: rgba(255, 255, 255, 0.99) !important;
   }
   .hero-content {
-    padding: var(--spacing-3xl) 10px var(--spacing-2xl);
+    padding: var(--spacing-xl) 10px var(--spacing-lg);
   }
   .hero-interactive .hero-clear-text .hero-title {
     line-height: 1.2;

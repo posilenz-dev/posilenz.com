@@ -2,7 +2,6 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export default function ServicesIntro() {
     useGSAP(() => {
@@ -31,7 +30,7 @@ export default function ServicesIntro() {
     }, []);
 
     return (
-        <section id="services" className="services-section section">
+        <section className="services-section section">
             <div className="services-container">
                 <div className="services-content">
                     <h2 className="services-title">

@@ -53,21 +53,21 @@ export default function Navbar() {
 
                 <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
                     <li>
-                        <Link href="/#about" onClick={closeMenu}>
-                            About
-                        </Link>
-                    </li>
-                    <li>
                         <Link href="/#services" onClick={closeMenu}>
-                            Services
+                            Our Services
                         </Link>
                     </li>
-                    <li>
+                     <li>
                         <Link href="/blog" onClick={closeMenu}>
-                            Blogs
+                            Insights
                         </Link>
                     </li>
 
+                    <li>
+                        <Link href="/#about" onClick={closeMenu}>
+                            About Us
+                        </Link>
+                    </li>
                     <li>
                         <Link href="/careers" onClick={closeMenu}>
                             Careers

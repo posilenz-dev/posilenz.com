@@ -10,8 +10,8 @@ export default function WhyJoin() {
                             <Image
                                 src="/images/career-icon-1.svg"
                                 alt=""
-                                width={50}
-                                height={50}
+                                width={36}
+                                height={36}
                             />
                         </div>
                         <h3 className="why-join-title">
@@ -31,8 +31,8 @@ export default function WhyJoin() {
                             <Image
                                 src="/images/career-icon-2.svg"
                                 alt=""
-                                width={50}
-                                height={50}
+                                width={36}
+                                height={36}
                             />
                         </div>
                         <h3 className="why-join-title">
@@ -51,8 +51,8 @@ export default function WhyJoin() {
                             <Image
                                 src="/images/career-icon-3.svg"
                                 alt=""
-                                width={50}
-                                height={50}
+                                width={36}
+                                height={36}
                             />
                         </div>
                         <h3 className="why-join-title">

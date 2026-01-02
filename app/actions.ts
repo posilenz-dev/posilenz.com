@@ -208,6 +208,80 @@ export async function submitApplication(formData: FormData) {
 
         await sendEmail(emailOptions);
 
+        // Send confirmation email to applicant
+        const applicantFirstName = data.name.split(" ")[0];
+        const confirmationEmailHtml = `
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+                        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                        .header { background-color: #1D54DD; color: white; padding: 40px 20px; text-align: center; }
+                        .header h1 { margin: 0; font-size: 28px; }
+                        .content { background-color: #f9f9f9; padding: 30px 20px; }
+                        .greeting { font-size: 18px; margin-bottom: 20px; }
+                        .message { margin-bottom: 20px; }
+                        .details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+                        .details-title { font-weight: bold; color: #1D54DD; margin-bottom: 10px; }
+                        .details-item { margin-bottom: 8px; }
+                        .next-steps { background: #E8F0FE; padding: 20px; border-radius: 8px; margin: 20px 0; }
+                        .next-steps-title { font-weight: bold; color: #1D54DD; margin-bottom: 10px; }
+                        .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; }
+                        .footer a { color: #1D54DD; text-decoration: none; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>Application Received</h1>
+                        </div>
+                        <div class="content">
+                            <p class="greeting">Dear ${applicantFirstName},</p>
+                            <p class="message">
+                                Thank you for applying for the <strong>${data.position}</strong> position at Posilenz.
+                                We're excited to have received your application and appreciate your interest in joining our team.
+                            </p>
+
+                            <div class="details">
+                                <div class="details-title">Application Summary</div>
+                                <div class="details-item"><strong>Position:</strong> ${data.position}</div>
+                                <div class="details-item"><strong>Experience:</strong> ${data.experience}</div>
+                                <div class="details-item"><strong>Availability:</strong> ${data.noticePeriod}</div>
+                            </div>
+
+                            <div class="next-steps">
+                                <div class="next-steps-title">What happens next?</div>
+                                <p>Our recruitment team will carefully review your application. If your profile matches our requirements, we'll reach out to schedule an initial conversation within 5-7 business days.</p>
+                            </div>
+
+                            <p class="message">
+                                In the meantime, feel free to explore more about us at <a href="https://posilenz.com" style="color: #1D54DD;">posilenz.com</a>.
+                            </p>
+
+                            <p>Best regards,<br><strong>The Posilenz Talent Team</strong></p>
+                        </div>
+                        <div class="footer">
+                            <p>&copy; ${new Date().getFullYear()} Posilenz. All rights reserved.</p>
+                            <p><a href="https://posilenz.com">posilenz.com</a></p>
+                        </div>
+                    </div>
+                </body>
+            </html>
+        `;
+
+        // Send confirmation to applicant (don't fail the whole submission if this fails)
+        try {
+            await sendEmail({
+                to: data.email,
+                subject: `Application Received - ${data.position} at Posilenz`,
+                html: confirmationEmailHtml,
+            });
+        } catch (confirmError) {
+            console.error("Error sending confirmation email to applicant:", confirmError);
+            // Don't throw - the main application was already submitted successfully
+        }
+
         return { success: true, message: "Application submitted successfully!" };
     } catch (error) {
         console.error("Error sending application email:", error);
