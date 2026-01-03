@@ -352,7 +352,7 @@
 
 @media (max-width: 768px) {
     .blog-hero-section {
-        padding: 40px 16px 0px;
+        padding: 80px 16px 0px;
     }
 
     .blog-post-meta {
@@ -366,6 +366,11 @@
     .featured-post {
         grid-template-columns: 1fr;
         min-height: auto;
+    }
+
+    .featured-post-image {
+        height: 250px;
+        min-height: 250px;
     }
 
     .featured-post-content {

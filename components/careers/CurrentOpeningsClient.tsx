@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { DocumentRenderer } from "@keystatic/core/renderer";
 
@@ -48,6 +48,26 @@ interface CurrentOpeningsClientProps {
 
 export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClientProps) {
     const [activeJobId, setActiveJobId] = useState<string | null>(null);
+
+    // Auto-expand job based on URL hash (e.g., #job-senior-developer)
+    useEffect(() => {
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#job-')) {
+            const slug = hash.replace('#job-', '');
+            // Check if this job exists in the careers list
+            const jobExists = careers.some(career => career.slug === slug);
+            if (jobExists) {
+                setActiveJobId(slug);
+                // Scroll to the job after a short delay to ensure DOM is ready
+                setTimeout(() => {
+                    const jobElement = document.getElementById(`job-${slug}`);
+                    if (jobElement) {
+                        jobElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            }
+        }
+    }, [careers]);
 
     const toggleJob = (slug: string) => {
         setActiveJobId(activeJobId === slug ? null : slug);

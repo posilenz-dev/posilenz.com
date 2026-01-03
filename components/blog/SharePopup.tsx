@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Copy } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface SharePopupProps {
     isOpen: boolean;
@@ -11,7 +10,14 @@ interface SharePopupProps {
 
 export default function SharePopup({ isOpen, onClose, title }: SharePopupProps) {
     const [copied, setCopied] = useState(false);
-    const [url, setUrl] = useState(() => (typeof window !== "undefined" ? window.location.href : ""));
+    const [url, setUrl] = useState("");
+
+    // Update URL when popup opens to ensure we have the correct current URL
+    useEffect(() => {
+        if (isOpen && typeof window !== "undefined") {
+            setUrl(window.location.href);
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 

@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -13,6 +13,9 @@ if (typeof window !== "undefined") {
 export default function ServicesDetails() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeService, setActiveService] = useState(0);
+    const touchStartX = useRef<number>(0);
+    const touchEndX = useRef<number>(0);
+    const totalServices = 4;
 
     useGSAP(
         () => {
@@ -25,30 +28,36 @@ export default function ServicesDetails() {
                 else item.classList.remove("active");
             });
 
+            // Track the last active index to prevent unnecessary updates
+            let lastActiveIndex = 0;
+
             // Scroll Trigger Config
             ScrollTrigger.create({
                 trigger: containerRef.current,
                 start: "top top",
                 end: isDesktop ? "+=400%" : "+=300%",
                 pin: true,
-                scrub: 1,
+                scrub: 0.5, // Smoother scrolling with lower scrub value
                 onUpdate: (self) => {
                     const progress = self.progress;
                     let activeIndex = 0;
 
-                    if (progress < 0.25) activeIndex = 0;
-                    else if (progress < 0.5) activeIndex = 1;
-                    else if (progress < 0.75) activeIndex = 2;
+                    // Adjusted thresholds for better distribution and edge case handling
+                    if (progress <= 0.2) activeIndex = 0;
+                    else if (progress <= 0.45) activeIndex = 1;
+                    else if (progress <= 0.7) activeIndex = 2;
                     else activeIndex = 3;
 
-                    if (activeIndex !== activeService) {
-                        // We can't use state here easily for class toggling inside gsap callback without re-renders loop potentially
-                        // But we can update state for the UI (thumbs) and manipulate DOM for performance
+                    if (activeIndex !== lastActiveIndex) {
+                        lastActiveIndex = activeIndex;
                         setActiveService(activeIndex);
 
                         serviceItems.forEach((item, i) => {
-                            if (i === activeIndex) item.classList.add("active");
-                            else item.classList.remove("active");
+                            if (i === activeIndex) {
+                                item.classList.add("active");
+                            } else {
+                                item.classList.remove("active");
+                            }
                         });
                     }
                 },
@@ -57,34 +66,78 @@ export default function ServicesDetails() {
         { scope: containerRef, dependencies: [] } // Careful with state dependencies to avoid resetting animation
     );
 
+    const updateActiveService = useCallback((index: number) => {
+        setActiveService(index);
+        const serviceItems = document.querySelectorAll(".service-detail-item");
+        serviceItems.forEach((item, i) => {
+            if (i === index) item.classList.add("active");
+            else item.classList.remove("active");
+        });
+    }, []);
+
     const handleThumbClick = (index: number) => {
         const isDesktop = window.innerWidth > 1000;
-        if (isDesktop && containerRef.current) {
-            const sectionTop = containerRef.current.offsetTop;
-            const sectionHeight = window.innerHeight * 4;
-            const targetProgress = index / 3; // 4 items -> 0, 1/3, 2/3, 1
-            // Actually the previous math was index / (serviceItems.length - 1)
-            const targetScroll = sectionTop + (sectionHeight * targetProgress);
+        // Only allow click navigation on mobile
+        if (!isDesktop && containerRef.current) {
+            updateActiveService(index);
 
-            gsap.to(window, {
-                scrollTo: targetScroll,
-                duration: 1.2,
-                ease: "power2.inOut"
-            });
-        } else {
-            // Mobile fallback or direct switch
-            setActiveService(index);
-            // Updating DOM manually for simple switch
-            const serviceItems = document.querySelectorAll(".service-detail-item");
-            serviceItems.forEach((item, i) => {
-                if (i === index) item.classList.add("active");
-                else item.classList.remove("active");
-            });
+            // Calculate scroll position based on service index
+            const scrollTriggerInstance = ScrollTrigger.getAll().find(
+                (st) => st.trigger === containerRef.current
+            );
+
+            if (scrollTriggerInstance) {
+                // Calculate the target progress for each service
+                const progressMap = [0.1, 0.35, 0.6, 0.85];
+                const targetProgress = progressMap[index];
+
+                // Calculate the scroll position
+                const start = scrollTriggerInstance.start;
+                const end = scrollTriggerInstance.end;
+                const targetScroll = start + (end - start) * targetProgress;
+
+                // Scroll to the calculated position
+                gsap.to(window, {
+                    scrollTo: { y: targetScroll, autoKill: false },
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
         }
     };
 
+    // Touch handlers for swipe navigation on mobile
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        touchEndX.current = e.targetTouches[0].clientX;
+    };
+
+    const handleTouchEnd = () => {
+        const isDesktop = window.innerWidth > 1000;
+        if (isDesktop) return;
+
+        const distance = touchStartX.current - touchEndX.current;
+        const minSwipeDistance = 50;
+
+        if (Math.abs(distance) > minSwipeDistance) {
+            if (distance > 0 && activeService < totalServices - 1) {
+                // Swipe left - next service
+                updateActiveService(activeService + 1);
+            } else if (distance < 0 && activeService > 0) {
+                // Swipe right - previous service
+                updateActiveService(activeService - 1);
+            }
+        }
+
+        touchStartX.current = 0;
+        touchEndX.current = 0;
+    };
+
     return (
-        <section ref={containerRef} className="service-details-section section">
+        <section id="services" ref={containerRef} className="service-details-section section">
             {/* Service Navigation Thumbnails */}
             <div className="service-nav-thumbs">
                 {[
@@ -104,7 +157,12 @@ export default function ServicesDetails() {
                 ))}
             </div>
 
-            <div className="service-details-wrapper">
+            <div
+                className="service-details-wrapper"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+            >
                 {/* Service 1: IT Consulting */}
                 <div className={`service-detail-item ${activeService === 0 ? "active" : ""}`}>
                     <div className="service-detail-content">

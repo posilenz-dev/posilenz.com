@@ -2,7 +2,11 @@ import { config, fields, collection } from '@keystatic/core';
 
 const keystaticConfig = config({
     storage: {
-        kind: 'local',
+        kind: 'github',
+        repo: {
+            owner: 'sarath-ps',
+            name: 'posilenz.com'
+        }
     },
     collections: {
         careers: collection({

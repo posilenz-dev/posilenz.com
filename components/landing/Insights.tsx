@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 
 export default function Insights() {
     const [activeTab, setActiveTab] = useState("News");
@@ -144,7 +144,7 @@ export default function Insights() {
                 >
                     <div className="insights-grid" ref={gridRef}>
                         {/* Article 1 */}
-                        <Link href="/blog-detail" className="insight-card-link">
+                        <Link href="/blog/the-rise-of-edge-computing" className="insight-card-link">
                             <article className="insight-card card-img-1">
                                 <div className="insight-content">
                                     <p className="insight-category">The Rise of Edge Computing:</p>
@@ -160,7 +160,7 @@ export default function Insights() {
                         </Link>
 
                         {/* Article 2 */}
-                        <Link href="/cloud-erp-implementation" className="insight-card-link">
+                        <Link href="/blog/cloud-erp-implementation" className="insight-card-link">
                             <article className="insight-card card-img-2">
                                 <div className="insight-content">
                                     <p className="insight-category">Cloud ERP Implementation:</p>
@@ -176,7 +176,7 @@ export default function Insights() {
                         </Link>
 
                         {/* Article 3 */}
-                        <Link href="/human-centric-ui-ux" className="insight-card-link">
+                        <Link href="/blog/human-centric-ui-ux" className="insight-card-link">
                             <article className="insight-card card-img-3">
                                 <div className="insight-content">
                                     <p className="insight-category">How 'Human-Centric' UI/</p>
