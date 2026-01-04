@@ -20,26 +20,28 @@ export default function Footer() {
 
                     <div className="footer-locations">
                         <div className="footer-location">
-                            <h4 className="footer-location-title">Qatar</h4>
-                            <p className="footer-location-info">Tel: +974 3033 1237</p>
+                            <h4 className="footer-location-title">India</h4>
                             <p className="footer-location-text">
-                                Posilenz Technology LLC, Alofog, PB No: 1373, Doha, Qatar
+                                Posilenz Technology LLC<br />
+                                3rd Floor, Unity Arcade, NAS Road<br />
+                                130 Junction, Muvattupuzha,<br />
+                                Kochi, Kerala - 686661
                             </p>
                         </div>
                         <div className="footer-location">
                             <h4 className="footer-location-title">UAE</h4>
-                            <p className="footer-location-info">Tel: +966 13 887 2603</p>
                             <p className="footer-location-text">
-                                Posilenz Technology LLC, Office Number 3-109, Ginger Business
-                                Centre, Al Khabeesi Showroom Building, Dubai, UAE
+                                Posilenz Technology LLC,<br />
+                                Office Number 3-109, Ginger Business Centre,<br />
+                                Al Khabeesi Showroom Building,<br />
+                                Dubai, UAE
                             </p>
                         </div>
                         <div className="footer-location">
-                            <h4 className="footer-location-title">India</h4>
-                            <p className="footer-location-info">Tel: +971 4242 4069</p>
+                            <h4 className="footer-location-title">Qatar</h4>
                             <p className="footer-location-text">
-                                Posilenz Technology LLC, 14/465/C, Randarkara Rd,
-                                Muvattupuzha, Ernakulam, Kerala, India – 686661
+                                Posilenz Technology LLC,<br />
+                                Alofog, PB No: 1373, Doha, Qatar
                             </p>
                         </div>
                         <div className="footer-location">
