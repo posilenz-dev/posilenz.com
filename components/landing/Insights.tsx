@@ -143,7 +143,7 @@ export default function Insights() {
                     onTouchEnd={handleTouchEnd}
                 >
                     <div className="insights-grid" ref={gridRef}>
-                        {/* Article 1 */}
+                        {/* Article 1 - The Rise of Edge Computing */}
                         <Link href="/blog/the-rise-of-edge-computing" className="insight-card-link">
                             <article className="insight-card card-img-1">
                                 <div className="insight-content">
@@ -153,13 +153,13 @@ export default function Insights() {
                                     </h3>
                                 </div>
                                 <div className="insight-footer">
-                                    <span className="insight-date-number">10</span>
-                                    <span className="insight-date-text">Dec 2025</span>
+                                    <span className="insight-date-number">27</span>
+                                    <span className="insight-date-text">Nov 2025</span>
                                 </div>
                             </article>
                         </Link>
 
-                        {/* Article 2 */}
+                        {/* Article 2 - Cloud ERP Implementation */}
                         <Link href="/blog/cloud-erp-implementation" className="insight-card-link">
                             <article className="insight-card card-img-2">
                                 <div className="insight-content">
@@ -169,24 +169,24 @@ export default function Insights() {
                                     </h3>
                                 </div>
                                 <div className="insight-footer">
-                                    <span className="insight-date-number">27</span>
+                                    <span className="insight-date-number">26</span>
                                     <span className="insight-date-text">Nov 2025</span>
                                 </div>
                             </article>
                         </Link>
 
-                        {/* Article 3 */}
+                        {/* Article 3 - Human-Centric UI/UX */}
                         <Link href="/blog/human-centric-ui-ux" className="insight-card-link">
                             <article className="insight-card card-img-3">
                                 <div className="insight-content">
-                                    <p className="insight-category">How 'Human-Centric' UI/</p>
+                                    <p className="insight-category">How 'Human-Centric' UI/UX</p>
                                     <h3 className="insight-title-text">
-                                        UX Design Drives Adoption in Enterprise Software
+                                        Design Drives Adoption in Enterprise Software
                                     </h3>
                                 </div>
                                 <div className="insight-footer">
-                                    <span className="insight-date-number">12</span>
-                                    <span className="insight-date-text">Sep 2025</span>
+                                    <span className="insight-date-number">25</span>
+                                    <span className="insight-date-text">Nov 2025</span>
                                 </div>
                             </article>
                         </Link>

@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [visible, setVisible] = useState(true);
+    const [activeSection, setActiveSection] = useState<string>("");
     const lastScrollY = useRef(0);
     const savedScrollY = useRef(0);
+    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -21,12 +24,36 @@ export default function Navbar() {
             // Always keep navbar visible (hamburger should be static throughout the app)
             setVisible(true);
 
+            // Only track active section on home page and desktop
+            if ((pathname === "/" || pathname === "") && window.innerWidth > 768) {
+                const sections = ["services", "insights", "about", "contact"];
+                const navbarHeight = 100;
+
+                for (const sectionId of sections) {
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        // Check if section is in viewport (with some offset for navbar)
+                        if (rect.top <= navbarHeight + 100 && rect.bottom >= navbarHeight) {
+                            setActiveSection(sectionId);
+                            break;
+                        }
+                    }
+                }
+
+                // If scrolled to top, clear active section
+                if (currentScrollY < 200) {
+                    setActiveSection("");
+                }
+            }
+
             lastScrollY.current = currentScrollY;
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll(); // Run on mount
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    }, [pathname]);
 
     const toggleMenu = () => {
         if (!isMenuOpen) {
@@ -120,27 +147,47 @@ export default function Navbar() {
 
                 <ul className={`nav-links ${isMenuOpen ? "active" : ""}`}>
                     <li>
-                        <Link href="/#services" onClick={(e) => handleNavClick(e, "/#services")}>
+                        <Link
+                            href="/#services"
+                            onClick={(e) => handleNavClick(e, "/#services")}
+                            className={activeSection === "services" ? "active" : ""}
+                        >
                             Our Services
                         </Link>
                     </li>
                     <li>
-                        <Link href="/blog" onClick={(e) => handleNavClick(e, "/blog")}>
+                        <Link
+                            href="/blog"
+                            onClick={(e) => handleNavClick(e, "/blog")}
+                            className={pathname.startsWith("/blog") || activeSection === "insights" ? "active" : ""}
+                        >
                             Insights
                         </Link>
                     </li>
                     <li>
-                        <Link href="/#about" onClick={(e) => handleNavClick(e, "/#about")}>
+                        <Link
+                            href="/#about"
+                            onClick={(e) => handleNavClick(e, "/#about")}
+                            className={activeSection === "about" ? "active" : ""}
+                        >
                             About Us
                         </Link>
                     </li>
                     <li>
-                        <Link href="/careers" onClick={(e) => handleNavClick(e, "/careers")}>
+                        <Link
+                            href="/careers"
+                            onClick={(e) => handleNavClick(e, "/careers")}
+                            className={pathname === "/careers" ? "active" : ""}
+                        >
                             Careers
                         </Link>
                     </li>
                     <li>
-                        <Link href="/#contact" onClick={(e) => handleNavClick(e, "/#contact")}>
+                        <Link
+                            href="/#contact"
+                            onClick={(e) => handleNavClick(e, "/#contact")}
+                            className={activeSection === "contact" ? "active" : ""}
+                        >
                             Contact
                         </Link>
                     </li>

@@ -2017,10 +2017,27 @@ body.menu-open {
   }
   .service-details-section {
     position: relative;
+    min-height: 100vh;
+    height: auto;
+  }
+  .service-details-wrapper {
+    min-height: 100vh;
+    height: auto;
+  }
+  .service-detail-item {
+    position: relative;
+    min-height: 100vh;
+    height: auto;
+    padding-bottom: 80px;
+    align-items: flex-start;
+    padding-top: 100px;
+  }
+  .service-detail-item:not(.active) {
+    display: none;
   }
   .service-nav-thumbs {
-    position: absolute;
-    bottom: var(--spacing-lg);
+    position: fixed;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 101;
