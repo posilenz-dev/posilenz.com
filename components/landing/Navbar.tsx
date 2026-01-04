@@ -103,12 +103,20 @@ export default function Navbar() {
                         window.history.replaceState(null, "", href);
                         // Use scrollTo with offset for better positioning on mobile
                         const isMobile = window.innerWidth <= 768;
-                        const navbarHeight = 70;
                         const elementRect = element.getBoundingClientRect();
                         const absoluteElementTop = elementRect.top + window.pageYOffset;
-                        // Add extra offset for about section on mobile to skip the animated background
-                        const extraOffset = (isMobile && targetId === "about") ? 480 : 0;
-                        const offsetPosition = absoluteElementTop - navbarHeight + extraOffset;
+
+                        // Services section needs to fill the viewport completely (no navbar offset)
+                        // About section on mobile needs extra offset to skip animated background
+                        let offsetPosition: number;
+                        if (targetId === "services") {
+                            // For services, scroll to exact top of section
+                            offsetPosition = absoluteElementTop;
+                        } else if (isMobile && targetId === "about") {
+                            offsetPosition = absoluteElementTop - 70 + 480;
+                        } else {
+                            offsetPosition = absoluteElementTop - 70;
+                        }
 
                         window.scrollTo({
                             top: offsetPosition,
