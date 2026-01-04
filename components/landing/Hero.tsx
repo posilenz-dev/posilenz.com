@@ -22,22 +22,31 @@ export default function Hero() {
             delay: 0.5,
         });
 
-        // Play the hover animation once on page load
+        // Play the animation on page load, then reverse back to original state
         const tl = gsap.timeline({
             delay: 0.8,
-            onComplete: () => setHasAnimated(true),
         });
 
-        tl.to(".hero-loader-text", {
-            opacity: 0,
-            filter: "blur(3px)",
+        // Animate to clear text (only show/hide clear text)
+        tl.to(".hero-clear-text", {
+            opacity: 1,
             duration: 0.6,
             ease: "power2.out",
-        }).to(".hero-clear-text", {
-            opacity: 1,
-            duration: 0.5,
+        })
+        // Hold for a moment
+        .to({}, { duration: 0.5 })
+        // Reverse back to loader text
+        .to(".hero-clear-text", {
+            opacity: 0,
+            duration: 0.6,
             ease: "power2.out",
-        }, "-=0.4");
+            onComplete: () => {
+                // Clear GSAP inline styles so CSS hover can take over
+                gsap.set(".hero-loader-text", { clearProps: "all" });
+                gsap.set(".hero-clear-text", { clearProps: "all" });
+                setHasAnimated(true);
+            },
+        });
     });
 
     return (
@@ -60,7 +69,7 @@ export default function Hero() {
                                 alt="Posilenz Text"
                                 width={600}
                                 height={100}
-                                className="mob w-full h-auto !p-[24px]"
+                                className="mob w-full h-auto !p-[30px]"
                                 priority
                             />
                         </div>

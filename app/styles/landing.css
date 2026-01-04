@@ -213,19 +213,18 @@ body.menu-open {
 }
 .nav-links a:hover {
   color: var(--primary-color);
+  font-weight: 600;
   transform: translateY(-2px);
 }
 .nav-links a:hover::after {
-  width: 100%;
-  left: 0;
+  width: 0;
 }
 .nav-links a.active {
   color: var(--primary-color);
   font-weight: 600;
 }
 .nav-links a.active::after {
-  width: 100%;
-  left: 0;
+  width: 0;
 }
 
 .hero-content {
@@ -266,10 +265,6 @@ body.menu-open {
 .hero-interactive .hero-loader-text img {
   max-width: 750px;
   height: auto;
-  transition: transform 0.4s ease, filter 0.4s ease;
-}
-.hero-interactive:hover .hero-loader-text img {
-  transform: scale(1.02);
 }
 .hero-interactive .hero-loader-text .desktop {
   display: block;
@@ -277,25 +272,12 @@ body.menu-open {
 .hero-interactive .hero-loader-text .mob {
   display: none;
 }
-.hero-interactive:not(.animation-complete):hover .hero-loader-text {
+/* Hover effect - works both before and after animation completes */
+.hero-interactive:hover .hero-loader-text {
   opacity: 0;
   filter: blur(3px);
 }
-.hero-interactive:not(.animation-complete):hover .hero-loader-text svg {
-  transform: scale(0);
-}
-.hero-interactive:not(.animation-complete):hover .hero-clear-text {
-  opacity: 1;
-}
-/* After animation completes, keep clear text visible and remove cursor pointer */
-.hero-interactive.animation-complete {
-  cursor: default;
-}
-.hero-interactive.animation-complete .hero-loader-text {
-  opacity: 0;
-  filter: blur(3px);
-}
-.hero-interactive.animation-complete .hero-clear-text {
+.hero-interactive:hover .hero-clear-text {
   opacity: 1;
 }
 .hero-interactive .hero-clear-text {
@@ -315,9 +297,6 @@ body.menu-open {
   max-width: 750px;
   height: auto;
   transition: transform 0.4s ease;
-}
-.hero-interactive:hover .hero-clear-text img {
-  transform: scale(1.02);
 }
 .hero-interactive .hero-clear-text .desktop {
   display: block;
@@ -1003,10 +982,12 @@ body.menu-open {
   stroke: #1D54DD;
 }
 
-.atomic-card:hover .atomic-icon svg {
+.atomic-card:hover .atomic-icon svg,
+.atomic-card.initial-hover .atomic-icon svg {
   transform: rotate(130deg);
 }
-.atomic-card:hover .atomic-icon svg .orbit-1, .atomic-card:hover .atomic-icon svg .orbit-2 {
+.atomic-card:hover .atomic-icon svg .orbit-1, .atomic-card:hover .atomic-icon svg .orbit-2,
+.atomic-card.initial-hover .atomic-icon svg .orbit-1, .atomic-card.initial-hover .atomic-icon svg .orbit-2 {
   stroke: rgba(255, 255, 255, 0.6);
 }
 
@@ -1036,15 +1017,18 @@ body.menu-open {
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sphere-card:hover .sphere-icon svg .meridian-hover-1 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-1,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-1 {
   opacity: 1;
   transition-delay: 0s;
 }
-.sphere-card:hover .sphere-icon svg .meridian-hover-4 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-4,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-4 {
   opacity: 1;
   transition-delay: 0.1s;
 }
-.sphere-card:hover .sphere-icon svg .meridian-hover-6 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-6,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-6 {
   opacity: 1;
   transition-delay: 0.2s;
 }
@@ -1064,13 +1048,15 @@ body.menu-open {
   stroke: rgba(66, 133, 244, 0.7);
 }
 
-.multi-domain:hover .circle-4 {
+.multi-domain:hover .circle-4,
+.multi-domain.initial-hover .circle-4 {
   stroke: rgba(255, 255, 255, 0.6);
   opacity: 1;
   transform: translate(0, 0);
   transition-delay: 0s;
 }
-.multi-domain:hover .circle-5 {
+.multi-domain:hover .circle-5,
+.multi-domain.initial-hover .circle-5 {
   stroke: rgba(255, 255, 255, 0.6);
   opacity: 1;
   transform: translate(0, 0);

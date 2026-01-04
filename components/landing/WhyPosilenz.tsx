@@ -36,6 +36,12 @@ export default function WhyPosilenz() {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add("animate-in");
+                        // Add initial-hover class to trigger icon animation on first view
+                        entry.target.classList.add("initial-hover");
+                        // Remove initial-hover after animation completes so hover can work
+                        setTimeout(() => {
+                            entry.target.classList.remove("initial-hover");
+                        }, 1000);
                     }
                 });
             },
