@@ -1247,12 +1247,13 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .insights-container {
   max-width: 1200px;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 24px;
 }
 
 .insights-title {
@@ -1302,49 +1303,39 @@ body.menu-open {
   border-color: #000;
 }
 
-.insights-carousel-wrapper {
-  overflow: hidden;
+/* Swiper wrapper styles */
+.insights-swiper-wrapper {
   width: 100%;
-  touch-action: pan-y pinch-zoom;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  overflow: visible;
 }
 
-.insights-grid {
-  display: flex;
-  gap: var(--spacing-xl);
-  scroll-behavior: smooth;
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@supports not (gap: 1px) {
-  .insights-grid > *:not(:first-child) {
-    margin-left: var(--spacing-xl);
-  }
+.insights-swiper-wrapper .swiper {
+  overflow: visible;
 }
 
 .insight-card-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  border-radius: 8px;
+  height: 100%;
 }
 
 .insight-card {
   background: #F8F8F9;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  border-radius: 8px;
   padding: var(--spacing-xl);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 460px;
-  width: calc((100vw - 48px - 72px) / 3.5);
-  flex-shrink: 0;
+  height: 100%;
   transition: all var(--transition-fast);
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 .insight-card::before {
   content: "";
@@ -1359,6 +1350,7 @@ body.menu-open {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: inherit;
 }
 .insight-card.card-img-1::before {
   background-image: url("/images/news-1.png");
@@ -1383,6 +1375,7 @@ body.menu-open {
   opacity: 0;
   transition: opacity var(--transition-fast);
   z-index: 1;
+  border-radius: inherit;
 }
 .insight-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
@@ -1900,15 +1893,14 @@ body.menu-open {
     grid-template-columns: 1fr;
   }
   .insights-section {
-    padding: var(--spacing-2xl) var(--spacing-md);
+    padding: var(--spacing-2xl) 0;
+    overflow: hidden;
   }
   .insights-container {
     padding: 0 var(--spacing-md);
   }
   .insight-card {
-    width: calc(100% - 32px);
-    max-width: calc(100vw - 32px);
-    min-height: 250px;
+    min-height: 280px;
     padding: var(--spacing-md);
   }
   .insights-tabs {
@@ -2068,13 +2060,13 @@ body.menu-open {
     padding: var(--spacing-md) 0;
   }
   .insights-section {
-    padding: var(--spacing-2xl) var(--spacing-sm);
+    padding: var(--spacing-2xl) 0;
+    overflow: hidden;
   }
   .insights-container {
-    padding: 0;
+    padding: 0 var(--spacing-sm);
   }
   .insight-card {
-    width: calc(100vw - 32px);
     min-height: 250px;
     padding: var(--spacing-md);
   }
