@@ -51,7 +51,9 @@ export default function Footer() {
                             </a>
                             <div className="footer-social">
                                 <Link
-                                    href="#"
+                                    href="https://x.com/posilenz"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="footer-social-link"
                                     aria-label="Twitter"
                                 >
@@ -66,7 +68,9 @@ export default function Footer() {
                                     </svg>
                                 </Link>
                                 <Link
-                                    href="#"
+                                    href="https://www.linkedin.com/company/posilenz/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="footer-social-link"
                                     aria-label="LinkedIn"
                                 >
