@@ -38,7 +38,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
 }
 
 body {
@@ -213,19 +212,18 @@ body.menu-open {
 }
 .nav-links a:hover {
   color: var(--primary-color);
+  font-weight: 600;
   transform: translateY(-2px);
 }
 .nav-links a:hover::after {
-  width: 100%;
-  left: 0;
+  width: 0;
 }
 .nav-links a.active {
   color: var(--primary-color);
   font-weight: 600;
 }
 .nav-links a.active::after {
-  width: 100%;
-  left: 0;
+  width: 0;
 }
 
 .hero-content {
@@ -266,10 +264,6 @@ body.menu-open {
 .hero-interactive .hero-loader-text img {
   max-width: 750px;
   height: auto;
-  transition: transform 0.4s ease, filter 0.4s ease;
-}
-.hero-interactive:hover .hero-loader-text img {
-  transform: scale(1.02);
 }
 .hero-interactive .hero-loader-text .desktop {
   display: block;
@@ -277,25 +271,12 @@ body.menu-open {
 .hero-interactive .hero-loader-text .mob {
   display: none;
 }
-.hero-interactive:not(.animation-complete):hover .hero-loader-text {
+/* Hover effect - works both before and after animation completes */
+.hero-interactive:hover .hero-loader-text {
   opacity: 0;
   filter: blur(3px);
 }
-.hero-interactive:not(.animation-complete):hover .hero-loader-text svg {
-  transform: scale(0);
-}
-.hero-interactive:not(.animation-complete):hover .hero-clear-text {
-  opacity: 1;
-}
-/* After animation completes, keep clear text visible and remove cursor pointer */
-.hero-interactive.animation-complete {
-  cursor: default;
-}
-.hero-interactive.animation-complete .hero-loader-text {
-  opacity: 0;
-  filter: blur(3px);
-}
-.hero-interactive.animation-complete .hero-clear-text {
+.hero-interactive:hover .hero-clear-text {
   opacity: 1;
 }
 .hero-interactive .hero-clear-text {
@@ -315,9 +296,6 @@ body.menu-open {
   max-width: 750px;
   height: auto;
   transition: transform 0.4s ease;
-}
-.hero-interactive:hover .hero-clear-text img {
-  transform: scale(1.02);
 }
 .hero-interactive .hero-clear-text .desktop {
   display: block;
@@ -418,6 +396,7 @@ body.menu-open {
   padding-top: 100px;
   padding-bottom: 460px;
   height: auto;
+  scroll-margin-top: 70px;
 }
 .about-section::before {
   content: "";
@@ -548,16 +527,16 @@ body.menu-open {
 
 .service-details-section {
   background-color: #000;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   height: 100vh;
-  scroll-margin-top: -100px;
 }
 
 .service-details-wrapper {
   position: relative;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 
 .service-detail-item {
@@ -567,7 +546,6 @@ body.menu-open {
   width: 100%;
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: flex-start;
   padding: 0;
   background-color: #000;
@@ -576,7 +554,7 @@ body.menu-open {
   visibility: hidden;
   transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
   align-items: flex-end;
-  padding-bottom: 180px;
+  padding-bottom: 120px;
   will-change: opacity, visibility;
 }
 .service-detail-item.active {
@@ -702,14 +680,14 @@ body.menu-open {
 
 .service-nav-thumbs {
   position: fixed;
-  bottom: var(--spacing-xl);
+  bottom: 0;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   display: flex;
   gap: 15px;
   z-index: 100;
-  padding: 0 10px;
+  padding: 20px 10px 40px;
   max-width: 1200px;
   width: 100%;
 }
@@ -1003,10 +981,12 @@ body.menu-open {
   stroke: #1D54DD;
 }
 
-.atomic-card:hover .atomic-icon svg {
+.atomic-card:hover .atomic-icon svg,
+.atomic-card.initial-hover .atomic-icon svg {
   transform: rotate(130deg);
 }
-.atomic-card:hover .atomic-icon svg .orbit-1, .atomic-card:hover .atomic-icon svg .orbit-2 {
+.atomic-card:hover .atomic-icon svg .orbit-1, .atomic-card:hover .atomic-icon svg .orbit-2,
+.atomic-card.initial-hover .atomic-icon svg .orbit-1, .atomic-card.initial-hover .atomic-icon svg .orbit-2 {
   stroke: rgba(255, 255, 255, 0.6);
 }
 
@@ -1036,15 +1016,18 @@ body.menu-open {
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sphere-card:hover .sphere-icon svg .meridian-hover-1 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-1,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-1 {
   opacity: 1;
   transition-delay: 0s;
 }
-.sphere-card:hover .sphere-icon svg .meridian-hover-4 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-4,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-4 {
   opacity: 1;
   transition-delay: 0.1s;
 }
-.sphere-card:hover .sphere-icon svg .meridian-hover-6 {
+.sphere-card:hover .sphere-icon svg .meridian-hover-6,
+.sphere-card.initial-hover .sphere-icon svg .meridian-hover-6 {
   opacity: 1;
   transition-delay: 0.2s;
 }
@@ -1064,13 +1047,15 @@ body.menu-open {
   stroke: rgba(66, 133, 244, 0.7);
 }
 
-.multi-domain:hover .circle-4 {
+.multi-domain:hover .circle-4,
+.multi-domain.initial-hover .circle-4 {
   stroke: rgba(255, 255, 255, 0.6);
   opacity: 1;
   transform: translate(0, 0);
   transition-delay: 0s;
 }
-.multi-domain:hover .circle-5 {
+.multi-domain:hover .circle-5,
+.multi-domain.initial-hover .circle-5 {
   stroke: rgba(255, 255, 255, 0.6);
   opacity: 1;
   transform: translate(0, 0);
@@ -1261,12 +1246,14 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  scroll-margin-top: 70px;
 }
 
 .insights-container {
   max-width: 1200px;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 24px;
 }
 
 .insights-title {
@@ -1316,49 +1303,39 @@ body.menu-open {
   border-color: #000;
 }
 
-.insights-carousel-wrapper {
-  overflow: hidden;
+/* Swiper wrapper styles */
+.insights-swiper-wrapper {
   width: 100%;
-  touch-action: pan-y pinch-zoom;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  overflow: visible;
 }
 
-.insights-grid {
-  display: flex;
-  gap: var(--spacing-xl);
-  scroll-behavior: smooth;
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@supports not (gap: 1px) {
-  .insights-grid > *:not(:first-child) {
-    margin-left: var(--spacing-xl);
-  }
+.insights-swiper-wrapper .swiper {
+  overflow: visible;
 }
 
 .insight-card-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  border-radius: 8px;
+  height: 100%;
 }
 
 .insight-card {
   background: #F8F8F9;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border: 1px solid rgba(200, 200, 200, 0.3);
+  border-radius: 8px;
   padding: var(--spacing-xl);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 460px;
-  width: calc((100vw - 48px - 72px) / 3.5);
-  flex-shrink: 0;
+  height: 100%;
   transition: all var(--transition-fast);
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 .insight-card::before {
   content: "";
@@ -1373,6 +1350,7 @@ body.menu-open {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: inherit;
 }
 .insight-card.card-img-1::before {
   background-image: url("/images/news-1.png");
@@ -1397,6 +1375,7 @@ body.menu-open {
   opacity: 0;
   transition: opacity var(--transition-fast);
   z-index: 1;
+  border-radius: inherit;
 }
 .insight-card:hover {
   border-color: rgba(255, 255, 255, 0.2);
@@ -1516,6 +1495,7 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: center;
+  scroll-margin-top: 70px;
 }
 
 .contact-container {
@@ -1599,6 +1579,102 @@ body.menu-open {
   background: rgba(255, 255, 255, 0.9);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Success Modal (same as careers) */
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.success-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
+
+.success-icon {
+  margin-bottom: 24px;
+}
+
+.success-title {
+  font-size: clamp(24px, 3vw, 28px);
+  font-weight: 600;
+  color: #1D54DD;
+  margin: 0 0 16px 0;
+  font-family: var(--font-heading);
+}
+
+.success-message {
+  font-size: clamp(14px, 1.5vw, 16px);
+  color: #1E1E1E;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.success-submessage {
+  font-size: clamp(13px, 1.3vw, 14px);
+  color: #666;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.success-btn {
+  background: #1D54DD;
+  color: white;
+  border: none;
+  padding: 12px 48px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.success-btn:hover {
+  background: #0A1630;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 71, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .success-modal {
+    padding: 32px 24px;
+  }
 }
 
 .footer-section {
@@ -1914,15 +1990,14 @@ body.menu-open {
     grid-template-columns: 1fr;
   }
   .insights-section {
-    padding: var(--spacing-2xl) var(--spacing-md);
+    padding: var(--spacing-2xl) 0;
+    overflow: hidden;
   }
   .insights-container {
     padding: 0 var(--spacing-md);
   }
   .insight-card {
-    width: calc(100% - 32px);
-    max-width: calc(100vw - 32px);
-    min-height: 250px;
+    min-height: 280px;
     padding: var(--spacing-md);
   }
   .insights-tabs {
@@ -2017,14 +2092,32 @@ body.menu-open {
   }
   .service-details-section {
     position: relative;
+    min-height: 100vh;
+    height: auto;
+  }
+  .service-details-wrapper {
+    min-height: 100vh;
+    height: auto;
+  }
+  .service-detail-item {
+    position: relative;
+    min-height: 100vh;
+    height: auto;
+    padding-bottom: 80px;
+    align-items: flex-start;
+    padding-top: 100px;
+  }
+  .service-detail-item:not(.active) {
+    display: none;
   }
   .service-nav-thumbs {
-    position: absolute;
-    bottom: var(--spacing-lg);
+    position: fixed;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     z-index: 101;
     transition: transform 0.3s ease-out;
+    padding: 10px 10px 30px;
   }
   .why-grid {
     grid-template-columns: 1fr;
@@ -2065,13 +2158,13 @@ body.menu-open {
     padding: var(--spacing-md) 0;
   }
   .insights-section {
-    padding: var(--spacing-2xl) var(--spacing-sm);
+    padding: var(--spacing-2xl) 0;
+    overflow: hidden;
   }
   .insights-container {
-    padding: 0;
+    padding: 0 var(--spacing-sm);
   }
   .insight-card {
-    width: calc(100vw - 32px);
     min-height: 250px;
     padding: var(--spacing-md);
   }

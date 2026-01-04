@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { submitApplication } from "@/app/actions";
 
 interface ApplicationFormProps {
@@ -15,6 +15,7 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [applicantName, setApplicantName] = useState("");
+    const formRef = useRef<HTMLFormElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -32,8 +33,6 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
             setApplicantName(name.split(" ")[0]); // Get first name
             await submitApplication(formData);
             setShowSuccess(true);
-            (e.target as HTMLFormElement).reset();
-            setFileName("Resume / CV Upload (PDF only, 5-10MB max)");
         } catch (error) {
             console.error(error);
             alert("Something went wrong. Please try again.");
@@ -44,6 +43,8 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
 
     const closeSuccessModal = () => {
         setShowSuccess(false);
+        formRef.current?.reset();
+        setFileName("Resume / CV Upload (PDF only, 5-10MB max)");
     };
 
     return (
@@ -76,7 +77,7 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
                 <div className="application-container">
                     <h2 className="application-title">Start Your Application</h2>
 
-                    <form className="application-form" onSubmit={handleSubmit}>
+                    <form className="application-form" onSubmit={handleSubmit} ref={formRef}>
                     {/* Personal Information */}
                     <div className="form-group">
                         <h3 className="form-group-title">Personal Information</h3>
