@@ -552,10 +552,10 @@ body.menu-open {
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  transition: opacity 0.5s ease-out, visibility 0.5s ease-out display 0.5s ease-out;
   align-items: flex-end;
   padding-bottom: 200px;
-  will-change: opacity, visibility;
+  will-change: opacity, visibility, display;
 }
 .service-detail-item.active {
   opacity: 1;
@@ -2101,15 +2101,13 @@ body.menu-open {
     height: auto;
   }
   .service-detail-item {
-    position: relative;
+    position: absolute;
     min-height: 100vh;
     height: auto;
     padding-bottom: 80px;
     align-items: flex-end;
     padding-top: 100px;
-  }
-  .service-detail-item:not(.active) {
-    display: none;
+    visibility: hidden;
   }
   .service-nav-thumbs {
     position: fixed;
