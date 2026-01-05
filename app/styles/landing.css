@@ -2105,7 +2105,7 @@ body.menu-open {
     min-height: 100vh;
     height: auto;
     padding-bottom: 80px;
-    align-items: flex-start;
+    align-items: flex-end;
     padding-top: 100px;
   }
   .service-detail-item:not(.active) {
