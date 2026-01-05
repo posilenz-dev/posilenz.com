@@ -79,7 +79,7 @@ export default function ServicesDetails() {
         const isDesktop = window.innerWidth > 1000;
         // Only allow click navigation on mobile
         if (!isDesktop && containerRef.current) {
-            updateActiveService(index);
+            // updateActiveService(index);
 
             // Calculate scroll position based on service index
             const scrollTriggerInstance = ScrollTrigger.getAll().find(
@@ -99,8 +99,8 @@ export default function ServicesDetails() {
                 // Scroll to the calculated position
                 gsap.to(window, {
                     scrollTo: { y: targetScroll, autoKill: false },
-                    duration: 0.5,
-                    ease: "power2.out"
+                    duration: 0.9,
+                    ease: "ease.out"
                 });
             }
         }

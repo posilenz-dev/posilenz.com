@@ -8,12 +8,12 @@ export interface Career {
     slug: string;
     title: string;
     intro: string;
-    location: 'remote' | 'hybrid' | 'onsite';
+    workmode: 'remote' | 'hybrid' | 'onsite';
+    location: string;
     employmentType: 'full-time' | 'part-time' | 'contract';
     experience: string;
     displayOrder: number;
     isActive: boolean;
-    whoYouAre: any;
     roleOverview: any;
     keyResponsibilities: readonly string[];
     skillsExperience: readonly string[];
@@ -24,12 +24,17 @@ export interface Career {
 
 // Helper to format location display
 function formatLocation(location: string): string {
-    const locationMap: Record<string, string> = {
+    return location;
+}
+
+// Helper to format work mode display
+function formatWorkMode(workmode: string): string {
+    const workmodeMap: Record<string, string> = {
         remote: 'Remote',
         hybrid: 'Hybrid',
         onsite: 'On-site',
     };
-    return locationMap[location] || location;
+    return workmodeMap[workmode] || workmode;
 }
 
 // Helper to format employment type display
@@ -130,13 +135,22 @@ export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClient
                                 <div className="job-meta-row">
                                     <div className="job-meta-item">
                                         <Image
+                                            src="/images/building.svg"
+                                            alt=""
+                                            width={14}
+                                            height={14}
+                                        />
+                                        <span>{formatWorkMode(career.workmode)}</span>
+                                    </div>
+                                    {career.location && <div className="job-meta-item">
+                                        <Image
                                             src="/images/location.svg"
                                             alt=""
                                             width={14}
                                             height={14}
                                         />
                                         <span>{formatLocation(career.location)}</span>
-                                    </div>
+                                    </div>}
                                     <div className="job-meta-item">
                                         <Image
                                             src="/images/clock.svg"
@@ -184,14 +198,6 @@ export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClient
 
                         <div className="job-details">
                             <div className="job-dtls-content">
-                                {career.whoYouAre && (
-                                    <div className="job-section">
-                                        <h4 className="job-section-title">Who You Are</h4>
-                                        <div className="job-section-text">
-                                            <DocumentRenderer document={career.whoYouAre} />
-                                        </div>
-                                    </div>
-                                )}
 
                                 {career.roleOverview && (
                                     <div className="job-section">
@@ -252,13 +258,13 @@ export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClient
                                 </h5>
 
                                 <div className="jobleft">
-                                    <p className="job-apply-text">
+                                    {/* <p className="job-apply-text">
                                         Apply now at:{" "}
                                         <a href="mailto:careers@posilenz.com">
                                             careers@posilenz.com
                                         </a>{" "}
                                         or click Apply now below
-                                    </p>
+                                    </p> */}
                                     <button
                                         className="job-apply-btn"
                                         onClick={() => scrollToApplication(career.title)}

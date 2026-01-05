@@ -37,6 +37,8 @@ export default function Navbar() {
                         if (rect.top <= navbarHeight + 100 && rect.bottom >= navbarHeight) {
                             setActiveSection(sectionId);
                             break;
+                        }else {
+                            setActiveSection("");
                         }
                     }
                 }

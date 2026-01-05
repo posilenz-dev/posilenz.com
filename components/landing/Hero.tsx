@@ -53,6 +53,7 @@ export default function Hero() {
         <section id="hero" className="hero-container section flex items-center justify-center">
             <div className="container mx-auto flex flex-col items-center justify-center">
                 <div className="hero-content w-full">
+                    <div className="hero-animate">
                     <div className={`hero-interactive ${hasAnimated ? "animation-complete" : ""}`}>
                         {/* SVG Loader Pattern Text (shown by default) */}
                         <div className="hero-loader-text">
@@ -100,6 +101,7 @@ export default function Hero() {
                         predictable workflows so your organisation operates with structured
                         certainty, confidence and clarity.
                     </p>
+                </div>
                 </div>
             </div>
         </section>
