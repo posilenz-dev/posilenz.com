@@ -20,12 +20,10 @@ export default function Footer() {
 
                     <div className="footer-locations">
                         <div className="footer-location">
-                            <h4 className="footer-location-title">India</h4>
+                            <h4 className="footer-location-title">Qatar</h4>
                             <p className="footer-location-text">
-                                Posilenz Technology LLC<br />
-                                3rd Floor, Unity Arcade, NAS Road<br />
-                                130 Junction, Muvattupuzha,<br />
-                                Kochi, Kerala - 686661
+                                Posilenz Technology LLC,<br />
+                                Alofog, PB No: 1373, Doha, Qatar
                             </p>
                         </div>
                         <div className="footer-location">
@@ -38,10 +36,12 @@ export default function Footer() {
                             </p>
                         </div>
                         <div className="footer-location">
-                            <h4 className="footer-location-title">Qatar</h4>
+                            <h4 className="footer-location-title">India</h4>
                             <p className="footer-location-text">
-                                Posilenz Technology LLC,<br />
-                                Alofog, PB No: 1373, Doha, Qatar
+                                Posilenz Technology LLC<br />
+                                3rd Floor, Unity Arcade, NAS Road<br />
+                                130 Junction, Muvattupuzha,<br />
+                                Kochi, Kerala - 686661
                             </p>
                         </div>
                         <div className="footer-location">
