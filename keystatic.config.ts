@@ -22,14 +22,19 @@ const keystaticConfig = config({
                     description: 'Brief description shown in the collapsed view',
                     multiline: true,
                 }),
-                location: fields.select({
-                    label: 'Location',
+                workmode: fields.select({
+                    label: 'Work Mode',
                     options: [
                         { label: 'Remote', value: 'remote' },
                         { label: 'Hybrid', value: 'hybrid' },
                         { label: 'On-site', value: 'onsite' },
                     ],
                     defaultValue: 'remote',
+                }),
+                location: fields.text({
+                    label: 'Location',
+                    description: 'City and country where the job is located (e.g., "Dubai, UAE")',
+                    validation: { isRequired: false},
                 }),
                 employmentType: fields.select({
                     label: 'Employment Type',
@@ -53,12 +58,6 @@ const keystaticConfig = config({
                     label: 'Active',
                     description: 'Show this job opening on the website',
                     defaultValue: true,
-                }),
-                whoYouAre: fields.document({
-                    label: 'Who You Are',
-                    formatting: true,
-                    dividers: true,
-                    links: true,
                 }),
                 roleOverview: fields.document({
                     label: 'Role Overview',

@@ -9,12 +9,12 @@ export interface Career {
     slug: string;
     title: string;
     intro: string;
-    location: 'remote' | 'hybrid' | 'onsite';
+    workmode: 'remote' | 'hybrid' | 'onsite';
+    location: string;
     employmentType: 'full-time' | 'part-time' | 'contract';
     experience: string;
     displayOrder: number;
     isActive: boolean;
-    whoYouAre: any;
     roleOverview: any;
     keyResponsibilities: readonly string[];
     skillsExperience: readonly string[];
@@ -34,8 +34,7 @@ export async function getCareers(): Promise<Career[]> {
     // Read document content for each career
     const careersWithContent = await Promise.all(
         activeCareers.map(async (career) => {
-            const [whoYouAre, roleOverview, whyJoin, content] = await Promise.all([
-                career.entry.whoYouAre(),
+            const [ roleOverview, whyJoin, content] = await Promise.all([
                 career.entry.roleOverview(),
                 career.entry.whyJoin(),
                 career.entry.content(),
@@ -45,12 +44,12 @@ export async function getCareers(): Promise<Career[]> {
                 slug: career.entry.slug || career.slug,
                 title: career.entry.title as string, // Safe assertion since we filtered nulls
                 intro: career.entry.intro,
+                workmode: career.entry.workmode,
                 location: career.entry.location,
                 employmentType: career.entry.employmentType,
                 experience: career.entry.experience,
                 displayOrder: career.entry.displayOrder || 0,
                 isActive: career.entry.isActive,
-                whoYouAre,
                 roleOverview,
                 keyResponsibilities: career.entry.keyResponsibilities,
                 skillsExperience: career.entry.skillsExperience,
@@ -70,8 +69,7 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
         const career = await reader.collections.careers.read(slug);
         if (!career || !career.title) return null; // Return null if no career or no title
 
-        const [whoYouAre, roleOverview, whyJoin, content] = await Promise.all([
-            career.whoYouAre(),
+        const [ roleOverview, whyJoin, content] = await Promise.all([
             career.roleOverview(),
             career.whyJoin(),
             career.content(),
@@ -82,11 +80,11 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
             title: career.title as string, // Safe assertion since we checked for null above
             intro: career.intro,
             location: career.location,
+            workmode: career.workmode,
             employmentType: career.employmentType,
             experience: career.experience,
             displayOrder: career.displayOrder || 0,
             isActive: career.isActive,
-            whoYouAre,
             roleOverview,
             keyResponsibilities: career.keyResponsibilities,
             skillsExperience: career.skillsExperience,
@@ -101,7 +99,7 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
 }
 
 // Helper to format location display
-export function formatLocation(location: string): string {
+export function formatWorkMode(location: string): string {
     const locationMap: Record<string, string> = {
         remote: 'Remote',
         hybrid: 'Hybrid',
