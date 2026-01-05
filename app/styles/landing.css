@@ -271,12 +271,15 @@ body.menu-open {
 .hero-interactive .hero-loader-text .mob {
   display: none;
 }
+.hero-animate {
+  padding: 150px 350px;
+}
 /* Hover effect - works both before and after animation completes */
-.hero-interactive:hover .hero-loader-text {
+.hero-animate:hover .hero-loader-text {
   opacity: 0;
   filter: blur(3px);
 }
-.hero-interactive:hover .hero-clear-text {
+.hero-animate:hover .hero-clear-text {
   opacity: 1;
 }
 .hero-interactive .hero-clear-text {
@@ -1958,6 +1961,9 @@ body.menu-open {
   }
   .hero-content {
     padding: var(--spacing-xl) 10px var(--spacing-lg);
+  }
+  .hero-animate {
+    padding: 0 var(--spacing-md);
   }
   .hero-interactive .hero-clear-text .hero-title {
     line-height: 1.2;
