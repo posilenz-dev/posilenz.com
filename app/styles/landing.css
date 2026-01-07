@@ -2063,6 +2063,9 @@ body.menu-open {
   .services-title .none {
     display: none;
   }
+  .team-wrapper {
+    scroll-margin-top: 70px;
+  }
 }
 @media (max-width: 480px) {
   .hero-loader-text .desktop {
