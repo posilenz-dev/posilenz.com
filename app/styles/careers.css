@@ -108,6 +108,7 @@
     border-bottom: 1px solid #6EA7F9;
     padding: 24px 0;
     transition: all 0.3s ease;
+    scroll-margin-top: 100px;
 }
 
 .job-listing:last-child {
@@ -507,7 +508,7 @@ select.form-input {
 /* Responsive */
 @media (max-width: 768px) {
     .careers-hero {
-        padding: 80px 16px 0px;
+        padding: 180px 16px 0px;
     }
 
     .careers-hero-title {

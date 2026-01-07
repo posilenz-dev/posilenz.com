@@ -1860,11 +1860,7 @@ body.menu-open {
     top: 18px;
     right: 15px;
     z-index: 1002;
-    /* background: rgba(255, 255, 255, 0.9); */
-    border-radius: 50%;
     padding: 10px;
-    -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
     transition: all 0.3s ease;
   }
   .hamburger:hover {
@@ -2110,7 +2106,7 @@ body.menu-open {
     position: absolute;
     min-height: 100vh;
     height: auto;
-    padding-bottom: 80px;
+    padding-bottom: 200px;
     align-items: flex-end;
     padding-top: 100px;
     visibility: hidden;
