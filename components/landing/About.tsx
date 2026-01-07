@@ -60,7 +60,22 @@ export default function About() {
                             is where complexity yields confidence, transforming every digital
                             step into predictable, accelerated progress.
                         </p>
-                        <Link href="#team-section" className="about-tagline">
+                        <Link 
+                            href="#team-section" 
+                            className="about-tagline"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                const element = document.getElementById('team-section');
+                                if (element) {
+                                    // Update URL hash
+                                    window.history.pushState(null, '', '#team-section');
+                                    // Scroll to element
+                                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                } else {
+                                    window.location.href = '#team-section';
+                                }
+                            }}
+                        >
                             Team Posilenz
                             <svg
                                 width="24"
