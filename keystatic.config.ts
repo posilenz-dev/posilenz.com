@@ -4,16 +4,26 @@ import { config, fields, collection } from '@keystatic/core';
 const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO;
 
 if (!keystaticRepo) {
-    console.log({keystaticRepo});
     throw new Error(
-        'Missing KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
+        'Missing NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
+    );
+}
+
+const [repoOwner, repoName] = keystaticRepo.split('/');
+
+if (!repoOwner || !repoName) {
+    throw new Error(
+        'Invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO format (expected "owner/repo").'
     );
 }
 
 const keystaticConfig = config({
     storage: {
         kind: 'github',
-        repo: keystaticRepo,
+        repo: {
+            owner: repoOwner,
+            name: repoName,
+        },
     },
     collections: {
         careers: collection({
