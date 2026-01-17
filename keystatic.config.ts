@@ -1,8 +1,19 @@
 import { config, fields, collection } from '@keystatic/core';
 
+
+const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO;
+
+if (!keystaticRepo) {
+    console.log({keystaticRepo});
+    throw new Error(
+        'Missing KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
+    );
+}
+
 const keystaticConfig = config({
     storage: {
-        kind: 'local',
+        kind: 'github',
+        repo: keystaticRepo,
     },
     collections: {
         careers: collection({
