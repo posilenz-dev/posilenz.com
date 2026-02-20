@@ -1,30 +1,26 @@
 import { config, fields, collection } from '@keystatic/core';
 
+const isLocal = process.env.NODE_ENV === 'development';
 
-const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO;
-
-if (!keystaticRepo) {
-    throw new Error(
-        'Missing NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
-    );
-}
-
+const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '';
 const [repoOwner, repoName] = keystaticRepo.split('/');
 
-if (!repoOwner || !repoName) {
+if (!isLocal && (!repoOwner || !repoName)) {
     throw new Error(
-        'Invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO format (expected "owner/repo").'
+        'Missing or invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage in production.'
     );
 }
 
 const keystaticConfig = config({
-    storage: {
-        kind: 'github',
-        repo: {
-            owner: repoOwner,
-            name: repoName,
+    storage: isLocal
+        ? { kind: 'local' }
+        : {
+            kind: 'github',
+            repo: {
+                owner: repoOwner,
+                name: repoName,
+            },
         },
-    },
     collections: {
         careers: collection({
             label: 'Careers',
@@ -55,7 +51,7 @@ const keystaticConfig = config({
                 location: fields.text({
                     label: 'Location',
                     description: 'City and country where the job is located (e.g., "Dubai, UAE")',
-                    validation: { isRequired: false},
+                    validation: { isRequired: false },
                 }),
                 employmentType: fields.select({
                     label: 'Employment Type',
