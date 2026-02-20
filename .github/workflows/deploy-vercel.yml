@@ -41,6 +41,11 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO: ${{ secrets.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO }}
+          KEYSTATIC_GITHUB_CLIENT_ID: ${{ secrets.KEYSTATIC_GITHUB_CLIENT_ID }}
+          KEYSTATIC_GITHUB_CLIENT_SECRET: ${{ secrets.KEYSTATIC_GITHUB_CLIENT_SECRET }}
+          KEYSTATIC_SECRET: ${{ secrets.KEYSTATIC_SECRET }}
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
