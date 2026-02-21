@@ -1,26 +1,27 @@
 import { config, fields, collection } from '@keystatic/core';
 
 const isLocal = process.env.NODE_ENV === 'development';
+const isGitHubMode = process.env.NEXT_PUBLIC_KEYSTATIC_MODE === 'github' || !isLocal;
 
 const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '';
 const [repoOwner, repoName] = keystaticRepo.split('/');
 
-if (!isLocal && (!repoOwner || !repoName)) {
+if (isGitHubMode && (!repoOwner || !repoName)) {
     throw new Error(
-        'Missing or invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage in production.'
+        'Missing or invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
     );
 }
 
 const keystaticConfig = config({
-    storage: isLocal
-        ? { kind: 'local' }
-        : {
+    storage: isGitHubMode
+        ? {
             kind: 'github',
             repo: {
                 owner: repoOwner,
                 name: repoName,
             },
-        },
+        }
+        : { kind: 'local' },
     collections: {
         careers: collection({
             label: 'Careers',

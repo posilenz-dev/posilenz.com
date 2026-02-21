@@ -1,110 +1,77 @@
-# Posilenz Website!
+# Posilenz - Intelligent Systems & AI Solutions
 
-Corporate website for Posilenz - Intelligent Systems & AI Solutions
+Welcome to the corporate website and landing platform for **Posilenz**. This project serves as the digital front door for the organization, showcasing services, insights, team details, and career openings.
 
-## Tech Stack
+## Quick Links for AI Agents
+If you are an AI assistant working on this repository, please review the following files before making changes:
+- [MEMORY.md](MEMORY.md): Crucial context about the architecture, tech stack, and design guidelines.
+- [AGENTS.md](AGENTS.md): Operational rules and instructions for AI agents.
 
-- Next.js 16 + React 19
-- TypeScript
-- Tailwind CSS
-- GSAP (animations)
-- Keystatic CMS
-- Nodemailer
+## Tech Stack Overview
 
-## Quick Start
+- **Framework**: Next.js 16 (App Router) + React 19
+- **Typing**: TypeScript
+- **Styling**: Tailwind CSS v4 (with PostCSS)
+- **UI Components**: shadcn/ui (Radix + Lucide icons)
+- **Animations**: GSAP (`@gsap/react`)
+- **Carousels**: Swiper
+- **CMS**: Keystatic (`@keystatic/next`)
+- **Emails**: Nodemailer
+- **Package Manager**: pnpm
 
-```bash
-pnpm install
-cp .env.local.template .env.local  # Configure SMTP
-pnpm dev
-```
+## Prerequisites
 
-Open http://localhost:3000
+- Node.js >= 24.x
+- pnpm >= 10.x
+
+## Getting Started
+
+1. **Install Dependencies**
+   ```bash
+   pnpm install
+   ```
+
+2. **Environment Configuration**
+   Copy the example environment file and configure it:
+   ```bash
+   cp .env.example .env.local
+   ```
+   **Required Variables**:
+   *   `SMTP_*`: Email configuration for contact forms.
+   *   `KEYSTATIC_*`: For production (or if testing GitHub mode locally), supply the Keystatic GitHub App credentials. Defaults to local file system storage in development.
+
+3. **Run Development Server**
+   ```bash
+   pnpm dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the website.
 
 ## Project Structure
 
-```
+```text
 posilenz.com/
-├── app/
-│   ├── page.tsx              # Homepage
-│   ├── blog/                 # Blog pages
-│   ├── careers/              # Careers page
-│   ├── actions.ts            # Server actions (forms)
-│   ├── api/keystatic/        # CMS API routes
-│   ├── keystatic/            # CMS admin UI
-│   └── styles/               # CSS files
-│       ├── landing.css
-│       ├── blog.css
-│       ├── blog-detail.css
-│       └── careers.css
-├── components/
-│   ├── landing/              # Homepage sections
-│   │   ├── Navbar.tsx
-│   │   ├── Hero.tsx
-│   │   ├── ServicesIntro.tsx
-│   │   ├── ServicesDetails.tsx
-│   │   ├── WhyPosilenz.tsx
-│   │   ├── About.tsx
-│   │   ├── Insights.tsx
-│   │   ├── Contact.tsx
-│   │   └── Footer.tsx
-│   ├── blog/                 # Blog components
-│   └── careers/              # Career components
-├── content/
-│   └── careers/              # Job listings (Keystatic)
-├── lib/
-│   ├── blogData.ts           # Blog content
-│   ├── keystatic.ts          # CMS config
-│   └── mailer.ts             # Email setup
-└── public/
-    └── images/               # Static assets
+├── app/                  # Next.js App Router (pages: /, /blog, /careers)
+│   ├── api/keystatic/    # Keystatic CMS API routes
+│   └── keystatic/        # Keystatic CMS Admin Interface
+├── components/           # Reusable UI components segmented logically
+│   ├── landing/          # Homepage sections (Hero, About, Services, etc.)
+│   ├── blog/             # Blog components
+│   ├── careers/          # Careers components
+│   └── ui/               # shadcn/ui components
+├── content/              # File-based content managed by Keystatic (Careers)
+├── lib/                  # Utilities (NodeMailer, Keystatic config, constants)
+└── public/               # Static assets & images
 ```
 
-## Environment Variables
+## CMS / Content Management
 
-Create `.env.local`:
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-EMAIL_FROM=your-email@gmail.com
-EMAIL_TO=recipient1@example.com,recipient2@example.com
-```
-
-### Keystatic GitHub Storage
-
-This project now expects Keystatic to use GitHub storage. Set these in `.env.local`
-for local dev and in your deployment environment for production.
-
-```env
-KEYSTATIC_GITHUB_REPO=owner/repo
-KEYSTATIC_GITHUB_CLIENT_ID=...
-KEYSTATIC_GITHUB_CLIENT_SECRET=...
-KEYSTATIC_SECRET=...
-NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG=...
-```
-
-These values come from the GitHub App you create for Keystatic. Follow the Keystatic
-GitHub mode docs to create/install the app and copy the credentials.
-
-## Scripts
-
-```bash
-pnpm dev        # Development server
-pnpm build      # Production build
-pnpm start      # Start production
-pnpm lint       # Run linter
-```
-
-## CMS Admin
-
-Access Keystatic at `/keystatic` to manage job listings.
+The project uses [Keystatic](https://keystatic.com) for managing career listings and structured data.
+- **Local Dev**: Content is read/written to `content/careers` locally.
+- **Production**: Content interacts with the configured GitHub repository.
+- **Access Admin UI**: Navigate to `/keystatic` when the app is running.
 
 ## Deployment
 
-1. Push to GitHub
-2. Import in Vercel
-3. Add environment variables
-4. Deploy
+1. Ensure all `NEXT_PUBLIC_KEYSTATIC_*` and `KEYSTATIC_*` environment variables are configured in your deployment platform (e.g., Vercel).
+2. The default build command is `pnpm build`.
+3. Push to the `main` branch to trigger your CI/CD pipeline.
