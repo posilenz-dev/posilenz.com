@@ -21,4 +21,4 @@ export default async function CareersPage() {
     );
 }
 
-export const revalidate = 30;
+export const revalidate = 60;
