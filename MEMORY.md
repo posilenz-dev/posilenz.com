@@ -10,12 +10,12 @@ Corporate website for Posilenz - Intelligent Systems & AI Solutions.
 
 *   **Framework**: Next.js 16.1 (App Router)
 *   **UI Library**: React 19
-*   **Styling**: Vanilla CSS / Tailwind CSS v4 (using PostCSS)
+*   **Styling**: Tailwind CSS v4 (using PostCSS)
 *   **Animations**: GSAP (`@gsap/react`)
 *   **Carousels**: Swiper
 *   **Components**: shadcn/ui (Lucide icons, Radix UI)
 *   **CMS**: Keystatic (`@keystatic/next`, `@keystatic/core`) - configured for both local and GitHub modes.
-*   **Email**: Nodemailer for transactional forms
+*   **Email**: Nodemailer and Resend for transactional forms
 *   **Language**: TypeScript
 *   **Package Manager**: pnpm
 
@@ -23,14 +23,18 @@ Corporate website for Posilenz - Intelligent Systems & AI Solutions.
 
 *   `app/`: Using Next.js App Router for all routing.
     *   `/`: Main Landing Page.
-    *   `/blog`: Blog overview and detail pages.
-    *   `/careers`: Career listings.
+    *   `/blog`: Blog overview and detail pages. Uses mocked data from `lib/blogData.ts`.
+    *   `/careers`: Career listings. Powered by Keystatic CMS.
     *   `/api`: API routes (like Keystatic API).
     *   `/keystatic`: Admin UI for the Keystatic CMS.
+    *   `actions.ts`: Core server actions for forms (Contact, Careers, Newsletter).
 *   `components/`: Segregated logically by domain (`landing`, `blog`, `careers`, `ui`).
     *   Always reuse shared `ui` components (shadcn based) when possible.
 *   `content/`: File-based content managed by Keystatic (e.g., job listings in `content/careers/`).
-*   `lib/`: Core utilities, including Mailer setup, Keystatic configurations, and mocked Blog data.
+*   `lib/`: Core utilities.
+    *   `blogData.ts`: Mocked Blog data (until migrated to CMS).
+    *   `keystatic.ts`: Keystatic reader and career retrieval helpers.
+    *   `mailer.ts`: SMTP and Resend setup for emails.
 
 ## Key Design Principles
 

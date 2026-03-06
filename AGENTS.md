@@ -13,6 +13,8 @@ This document provides explicit rules and operational guidelines for AI agents i
 7. **Task Workflows**:
    - For complex tasks, use your `task_boundary` tool and keep users informed.
    - For backend/CMS modifications involving Keystatic, verify `keystatic.config.ts`.
+   - Centralize form logic in `app/actions.ts` using Next.js Server Actions.
+   - Note that `blog` content is currently mocked in `lib/blogData.ts`; update this file if new posts are needed until the CMS migration.
    - Never commit sensitive keys or placeholder passwords to the `.env` configuration files.
 
 ## Workflow Example
