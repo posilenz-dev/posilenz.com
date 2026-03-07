@@ -1,10 +1,15 @@
 import { config, fields, collection } from '@keystatic/core';
 
 const isLocal = process.env.NODE_ENV === 'development';
-const isGitHubMode = process.env.NEXT_PUBLIC_KEYSTATIC_MODE === 'github' || !isLocal;
+const isGitHubMode =
+    process.env.NEXT_PUBLIC_KEYSTATIC_MODE === 'github' ||
+    (!isLocal && process.env.NEXT_PUBLIC_KEYSTATIC_MODE !== 'local');
 
-const keystaticRepo = process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '';
+const keystaticRepo = (process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '').replace(/\.git$/, '');
 const [repoOwner, repoName] = keystaticRepo.split('/');
+
+console.log(`[Keystatic Config] Mode: ${isGitHubMode ? 'GitHub' : 'Local'} (NODE_ENV: ${process.env.NODE_ENV}, Mode Var: ${process.env.NEXT_PUBLIC_KEYSTATIC_MODE})`);
+console.log(`[Keystatic Config] Repo: ${repoOwner}/${repoName}`);
 
 if (isGitHubMode && (!repoOwner || !repoName)) {
     throw new Error(

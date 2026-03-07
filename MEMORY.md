@@ -40,7 +40,7 @@ Corporate website for Posilenz - Intelligent Systems & AI Solutions.
 
 1.  **Aesthetics**: The design utilizes dynamic micro-animations via GSAP, tailored color palettes, and modern typography (Inter and Sora fonts).
 2.  **Responsiveness**: Always build mobile-first with Tailwind utility classes.
-3.  **CMS Content Development**: When defining schemas in Keystatic, verify `keystatic.config.ts`. Ensure environment variables are respected. The CMS runs in "local" mode during development and "github" mode in production.
+3.  **CMS Content Development**: When defining schemas in Keystatic, verify `keystatic.config.ts`. Ensure environment variables are respected. The CMS runs in "local" mode during development and "github" mode in production. In `lib/keystatic.ts`, `createGitHubReader` is used when in GitHub mode to ensure content is fetched from the remote repository correctly, even during development.
 
 ## Environment Variables
 

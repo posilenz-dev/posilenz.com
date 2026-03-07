@@ -1,8 +1,23 @@
 import { createReader } from '@keystatic/core/reader';
 import config from '../keystatic.config';
 
-// Create reader instance
-export const reader = createReader('', config);
+const isGitHubMode = config.storage.kind === 'github';
+
+console.log(`[Keystatic Reader] Initializing... Mode: ${config.storage.kind}, cwd: ${process.cwd()}`);
+console.log(`[Keystatic Reader] KEYSTATIC_GITHUB_TOKEN: ${process.env.KEYSTATIC_GITHUB_TOKEN ? 'Present' : 'Missing'}`);
+
+export const reader = isGitHubMode
+    ? (() => {
+        const { createGitHubReader } = require('@keystatic/core/reader/github');
+        const repo = `${(config.storage as any).repo.owner}/${(config.storage as any).repo.name}` as const;
+        console.log(`[Keystatic Reader] Creating GitHub reader for ${repo} (branch: main)`);
+        return createGitHubReader(config, {
+            repo,
+            token: process.env.KEYSTATIC_GITHUB_TOKEN,
+            ref: 'main', // Explicitly use main branch
+        });
+    })()
+    : createReader(process.cwd(), config);
 
 // Career type definition
 export interface Career {
@@ -25,16 +40,19 @@ export interface Career {
 
 // Get all active careers sorted by display order
 export async function getCareers(): Promise<Career[]> {
+    console.log(`[Keystatic getCareers] Calling reader.collections.careers.all()...`);
+    console.log(`[Keystatic getCareers] Storage kind: ${config.storage.kind}`);
     const careers = await reader.collections.careers.all();
+    console.log(`[Keystatic getCareers] Found ${careers.length} careers:`, careers.map((c: any) => c.slug));
 
     const activeCareers = careers
-        .filter((career) => career.entry.isActive && career.entry.title) // Filter out careers without titles
-        .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0));
+        .filter((career: any) => career.entry.isActive && career.entry.title) // Filter out careers without titles
+        .sort((a: any, b: any) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0));
 
     // Read document content for each career
     const careersWithContent = await Promise.all(
-        activeCareers.map(async (career) => {
-            const [ roleOverview, whyJoin, content] = await Promise.all([
+        activeCareers.map(async (career: any) => {
+            const [roleOverview, whyJoin, content] = await Promise.all([
                 career.entry.roleOverview(),
                 career.entry.whyJoin(),
                 career.entry.content(),
@@ -69,7 +87,7 @@ export async function getCareerBySlug(slug: string): Promise<Career | null> {
         const career = await reader.collections.careers.read(slug);
         if (!career || !career.title) return null; // Return null if no career or no title
 
-        const [ roleOverview, whyJoin, content] = await Promise.all([
+        const [roleOverview, whyJoin, content] = await Promise.all([
             career.roleOverview(),
             career.whyJoin(),
             career.content(),
