@@ -12,9 +12,9 @@ async function testReader() {
 
     try {
         const careers = await reader.collections.careers.all();
-        console.log('Found careers:', careers.map(c => c.slug));
+        console.log('Found careers:', careers.map((c: any) => c.slug));
 
-        if (careers.some(c => c.slug === 'asd-asd-asd')) {
+        if (careers.some((c: any) => c.slug === 'asd-asd-asd')) {
             console.log('SUCCESS: Read "asd-asd-asd" from GitHub!');
         } else {
             console.log('FAILURE: Still reading from local (only local slugs found).');

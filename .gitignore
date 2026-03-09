@@ -41,3 +41,10 @@ yarn-error.log*
 next-env.d.ts
 !.env.local
 !.env.example
+.agent
+.agents
+.gemini
+.github/agents
+.github/prompts
+_bmad
+.github/copilot-instructions.md
