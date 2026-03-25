@@ -1,37 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { BlogListItem } from "@/lib/keystatic";
 
-export default function FeaturedPost() {
+interface FeaturedPostProps {
+    post: BlogListItem | null;
+}
+
+export default function FeaturedPost({ post }: FeaturedPostProps) {
+    if (!post) {
+        return null;
+    }
+
     return (
         <section className="featured-post-section">
             <div className="featured-post-container">
                 <div className="featured-post">
                     <div className="featured-post-image">
                         <Image
-                            src="/images/blog-dtls.png"
-                            alt="Edge Computing"
+                            src={post.coverImage || "/images/og-image.png"}
+                            alt={post.title}
                             fill
                             className="object-cover"
                         />
                     </div>
                     <div className="featured-post-content">
                         <div className="blog-post-meta">
-                            <span className="blog-post-number">27</span>
-                            <span className="blog-post-date white">Nov 2025</span>
+                            <span className="blog-post-number">{post.displayDay}</span>
+                            <span className="blog-post-date white">{post.displayMonthYear}</span>
                         </div>
 
-                        <h2 className="featured-post-title">
-                            The Rise of Edge Computing:
-                            <br />
-                            Why Your Data Strategy Needs a 2026 Reboot
-                        </h2>
-                        <p className="featured-post-excerpt">
-                            The way we process, store, and analyse data is undergoing a
-                            fundamental transformation. For years, cloud computing has been
-                            the backbone of digital infrastructure, centralising data
-                            processing in massive data centers.
-                        </p>
-                        <Link href="/blog/the-rise-of-edge-computing" className="featured-post-link">
+                        <h2 className="featured-post-title">{post.title}</h2>
+                        <p className="featured-post-excerpt">{post.excerpt}</p>
+                        <Link href={`/blog/${post.slug}`} className="featured-post-link">
                             Read more
                         </Link>
                     </div>

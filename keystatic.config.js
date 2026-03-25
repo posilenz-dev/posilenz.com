@@ -1,24 +1,18 @@
-import { config, fields, collection } from '@keystatic/core';
-
-const isLocal = process.env.NODE_ENV === 'development';
-const configuredMode = process.env.NEXT_PUBLIC_KEYSTATIC_MODE;
-const isGitHubMode =
-    configuredMode === 'github' ||
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@keystatic/core");
+var isLocal = process.env.NODE_ENV === 'development';
+var configuredMode = process.env.NEXT_PUBLIC_KEYSTATIC_MODE;
+var isGitHubMode = configuredMode === 'github' ||
     (configuredMode !== 'local' && !isLocal);
-
-const keystaticRepo = (process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '').replace(/\.git$/, '');
-const [repoOwner, repoName] = keystaticRepo.split('/');
-
-console.log(`[Keystatic Config] Mode: ${isGitHubMode ? 'GitHub' : 'Local'} (NODE_ENV: ${process.env.NODE_ENV}, Mode Var: ${process.env.NEXT_PUBLIC_KEYSTATIC_MODE})`);
-console.log(`[Keystatic Config] Repo: ${repoOwner}/${repoName}`);
-
+var keystaticRepo = (process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO || '').replace(/\.git$/, '');
+var _a = keystaticRepo.split('/'), repoOwner = _a[0], repoName = _a[1];
+console.log("[Keystatic Config] Mode: ".concat(isGitHubMode ? 'GitHub' : 'Local', " (NODE_ENV: ").concat(process.env.NODE_ENV, ", Mode Var: ").concat(process.env.NEXT_PUBLIC_KEYSTATIC_MODE, ")"));
+console.log("[Keystatic Config] Repo: ".concat(repoOwner, "/").concat(repoName));
 if (isGitHubMode && (!repoOwner || !repoName)) {
-    throw new Error(
-        'Missing or invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.'
-    );
+    throw new Error('Missing or invalid NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO (expected "owner/repo") for Keystatic GitHub storage.');
 }
-
-const keystaticConfig = config({
+var keystaticConfig = (0, core_1.config)({
     storage: isGitHubMode
         ? {
             kind: 'github',
@@ -29,24 +23,24 @@ const keystaticConfig = config({
         }
         : { kind: 'local' },
     collections: {
-        careers: collection({
+        careers: (0, core_1.collection)({
             label: 'Careers',
             slugField: 'slug',
             path: 'content/careers/*/',
             schema: {
-                slug: fields.slug({
+                slug: core_1.fields.slug({
                     name: {
                         label: 'Job Slug',
                         description: 'URL-friendly identifier (e.g., senior-developer)'
                     }
                 }),
-                title: fields.text({ label: 'Job Title', validation: { isRequired: true } }),
-                intro: fields.text({
+                title: core_1.fields.text({ label: 'Job Title', validation: { isRequired: true } }),
+                intro: core_1.fields.text({
                     label: 'Short Introduction',
                     description: 'Brief description shown in the collapsed view',
                     multiline: true,
                 }),
-                workmode: fields.select({
+                workmode: core_1.fields.select({
                     label: 'Work Mode',
                     options: [
                         { label: 'Remote', value: 'remote' },
@@ -55,12 +49,12 @@ const keystaticConfig = config({
                     ],
                     defaultValue: 'remote',
                 }),
-                location: fields.text({
+                location: core_1.fields.text({
                     label: 'Location',
                     description: 'City and country where the job is located (e.g., "Dubai, UAE")',
                     validation: { isRequired: false },
                 }),
-                employmentType: fields.select({
+                employmentType: core_1.fields.select({
                     label: 'Employment Type',
                     options: [
                         { label: 'Full-time', value: 'full-time' },
@@ -69,54 +63,45 @@ const keystaticConfig = config({
                     ],
                     defaultValue: 'full-time',
                 }),
-                experience: fields.text({
+                experience: core_1.fields.text({
                     label: 'Experience Required',
                     description: 'e.g., "6+ Years", "3-5 Years"',
                 }),
-                displayOrder: fields.number({
+                displayOrder: core_1.fields.number({
                     label: 'Display Order',
                     description: 'Lower numbers appear first',
                     defaultValue: 1,
                 }),
-                isActive: fields.checkbox({
+                isActive: core_1.fields.checkbox({
                     label: 'Active',
                     description: 'Show this job opening on the website',
                     defaultValue: true,
                 }),
-                roleOverview: fields.document({
+                roleOverview: core_1.fields.document({
                     label: 'Role Overview',
                     formatting: true,
                     dividers: true,
                     links: true,
                 }),
-                keyResponsibilities: fields.array(
-                    fields.text({ label: 'Responsibility' }),
-                    {
-                        label: 'Key Responsibilities',
-                        itemLabel: (props) => props.value || 'Responsibility',
-                    }
-                ),
-                skillsExperience: fields.array(
-                    fields.text({ label: 'Skill/Experience' }),
-                    {
-                        label: 'Skills & Experience',
-                        itemLabel: (props) => props.value || 'Skill',
-                    }
-                ),
-                whatYoullBring: fields.array(
-                    fields.text({ label: 'Quality/Trait' }),
-                    {
-                        label: "What You'll Bring",
-                        itemLabel: (props) => props.value || 'Quality',
-                    }
-                ),
-                whyJoin: fields.document({
+                keyResponsibilities: core_1.fields.array(core_1.fields.text({ label: 'Responsibility' }), {
+                    label: 'Key Responsibilities',
+                    itemLabel: function (props) { return props.value || 'Responsibility'; },
+                }),
+                skillsExperience: core_1.fields.array(core_1.fields.text({ label: 'Skill/Experience' }), {
+                    label: 'Skills & Experience',
+                    itemLabel: function (props) { return props.value || 'Skill'; },
+                }),
+                whatYoullBring: core_1.fields.array(core_1.fields.text({ label: 'Quality/Trait' }), {
+                    label: "What You'll Bring",
+                    itemLabel: function (props) { return props.value || 'Quality'; },
+                }),
+                whyJoin: core_1.fields.document({
                     label: 'Why Join Posilenz',
                     formatting: true,
                     dividers: true,
                     links: true,
                 }),
-                content: fields.document({
+                content: core_1.fields.document({
                     label: 'Additional Content',
                     description: 'Any additional job details (optional)',
                     formatting: true,
@@ -125,7 +110,7 @@ const keystaticConfig = config({
                 }),
             },
         }),
-        blog: collection({
+        blog: (0, core_1.collection)({
             label: 'Blog',
             slugField: 'slug',
             path: 'content/blog/*/',
@@ -135,38 +120,38 @@ const keystaticConfig = config({
             },
             columns: ['title', 'publishDate', 'isDraft'],
             schema: {
-                slug: fields.slug({
+                slug: core_1.fields.slug({
                     name: {
                         label: 'Post Slug',
                         description: 'URL-friendly identifier for the blog post',
                     },
                 }),
-                title: fields.text({
+                title: core_1.fields.text({
                     label: 'Title',
                     validation: { isRequired: true },
                 }),
-                excerpt: fields.text({
+                excerpt: core_1.fields.text({
                     label: 'Excerpt',
                     description: 'Short summary used for list and SEO description output',
                     multiline: true,
                     validation: { isRequired: true },
                 }),
-                publishDate: fields.date({
+                publishDate: core_1.fields.date({
                     label: 'Publish Date',
                     validation: { isRequired: true },
                 }),
-                isDraft: fields.checkbox({
+                isDraft: core_1.fields.checkbox({
                     label: 'Draft',
                     description: 'Hide this post from the public website until it is ready',
                     defaultValue: true,
                 }),
-                coverImage: fields.image({
+                coverImage: core_1.fields.image({
                     label: 'Cover Image',
                     description: 'Optional cover image used on the blog list, homepage insights, detail page, and social metadata',
                     directory: 'public/images/blog',
-                    publicPath: '/api/assets/public/images/blog/',
+                    publicPath: '/images/blog/',
                 }),
-                content: fields.markdoc({
+                content: core_1.fields.markdoc({
                     label: 'Content',
                     description: 'Main article content in Markdown/Markdoc format',
                     extension: 'md',
@@ -175,5 +160,4 @@ const keystaticConfig = config({
         }),
     },
 });
-
-export default keystaticConfig;
+exports.default = keystaticConfig;

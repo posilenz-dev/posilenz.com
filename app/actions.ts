@@ -213,8 +213,10 @@ export async function submitApplication(formData: FormData) {
     `;
 
     try {
+        type EmailOptions = Parameters<typeof sendEmail>[0];
+
         // Prepare email options
-        const emailOptions: any = {
+        const emailOptions: EmailOptions = {
             to: process.env.EMAIL_TO || 'info@posilenz.com',
             subject: `New Job Application: ${data.position} - ${data.name}`,
             html: emailHtml,

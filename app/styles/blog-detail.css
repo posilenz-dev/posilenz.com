@@ -331,21 +331,54 @@
     padding-top: 60px;
 }
 
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6,
 .article-head {
     font-size: clamp(16px, 1.2vw, 20px);
     font-weight: 600;
     padding-bottom: 15px;
     line-height: 1.8;
     color: #0A1630;
-    margin-left: auto;
+    margin: 40px 0 0;
 }
 
+.article-content p,
 .article-paragraph {
     margin: 0 0 32px 0;
 }
 
+.article-content p:last-child,
 .article-paragraph:last-child {
     margin-bottom: 0;
+}
+
+.article-content ul,
+.article-content ol {
+    margin: 0 0 32px 20px;
+    display: grid;
+    gap: 12px;
+}
+
+.article-content a {
+    color: #1D54DD;
+    text-decoration: underline;
+}
+
+.article-content blockquote {
+    margin: 0 0 32px;
+    padding-left: 20px;
+    border-left: 3px solid #1D54DD;
+    color: #23407b;
+}
+
+.article-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 0 0 32px;
 }
 
 /* Responsive Design */

@@ -61,7 +61,7 @@ export default function ApplicationForm({ careers }: ApplicationFormProps) {
                         </div>
                         <h3 className="success-title">Thank You, {applicantName}!</h3>
                         <p className="success-message">
-                            Your application has been successfully submitted. We've sent a confirmation email to your inbox.
+                            Your application has been successfully submitted. We&apos;ve sent a confirmation email to your inbox.
                         </p>
                         <p className="success-submessage">
                             Our team will review your application and get back to you within 5-7 business days.
