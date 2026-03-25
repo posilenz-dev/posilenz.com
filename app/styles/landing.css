@@ -1351,6 +1351,7 @@ body.menu-open {
   opacity: 0;
   transition: opacity var(--transition-fast);
   z-index: 0;
+  background-image: var(--insight-card-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

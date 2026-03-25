@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface SharePopupProps {
     isOpen: boolean;
@@ -10,14 +10,7 @@ interface SharePopupProps {
 
 export default function SharePopup({ isOpen, onClose, title }: SharePopupProps) {
     const [copied, setCopied] = useState(false);
-    const [url, setUrl] = useState("");
-
-    // Update URL when popup opens to ensure we have the correct current URL
-    useEffect(() => {
-        if (isOpen && typeof window !== "undefined") {
-            setUrl(window.location.href);
-        }
-    }, [isOpen]);
+    const url = typeof window !== "undefined" ? window.location.href : "";
 
     if (!isOpen) return null;
 

@@ -1,26 +1,19 @@
-import dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
-
-import { reader } from './lib/keystatic';
+import { createReader } from '@keystatic/core/reader';
+import config from './keystatic.config';
 
 async function testReader() {
-    console.log('--- Keystatic Reader Test ---');
-    console.log('NODE_ENV:', process.env.NODE_ENV);
-    console.log('NEXT_PUBLIC_KEYSTATIC_MODE:', process.env.NEXT_PUBLIC_KEYSTATIC_MODE);
-    console.log('KEYSTATIC_GITHUB_TOKEN exists:', !!process.env.KEYSTATIC_GITHUB_TOKEN);
+    console.log('--- Local Keystatic Reader Test ---');
 
     try {
+        const reader = createReader(process.cwd(), config);
         const careers = await reader.collections.careers.all();
-        console.log('Found careers:', careers.map((c: any) => c.slug));
+        const blogPosts = await reader.collections.blog.all();
 
-        if (careers.some((c: any) => c.slug === 'asd-asd-asd')) {
-            console.log('SUCCESS: Read "asd-asd-asd" from GitHub!');
-        } else {
-            console.log('FAILURE: Still reading from local (only local slugs found).');
-        }
+        console.log(`Found ${careers.length} careers.`);
+        console.log(`Found ${blogPosts.length} blog posts.`);
+        console.log('Blog slugs:', blogPosts.map((post: { slug: string }) => post.slug));
     } catch (error) {
-        console.error('Error during reader test:', error);
+        console.error('Reader Error:', error);
     }
 }
 

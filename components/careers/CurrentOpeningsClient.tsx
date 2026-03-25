@@ -3,24 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { DocumentRenderer } from "@keystatic/core/renderer";
-
-export interface Career {
-    slug: string;
-    title: string;
-    intro: string;
-    workmode: 'remote' | 'hybrid' | 'onsite';
-    location: string;
-    employmentType: 'full-time' | 'part-time' | 'contract';
-    experience: string;
-    displayOrder: number;
-    isActive: boolean;
-    roleOverview: any;
-    keyResponsibilities: readonly string[];
-    skillsExperience: readonly string[];
-    whatYoullBring: readonly string[];
-    whyJoin: any;
-    content: any;
-}
+import type { Career } from "@/lib/keystatic";
 
 // Helper to format location display
 function formatLocation(location: string): string {
@@ -51,28 +34,38 @@ interface CurrentOpeningsClientProps {
     careers: Career[];
 }
 
-export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClientProps) {
-    const [activeJobId, setActiveJobId] = useState<string | null>(null);
+function getInitialJobId(careers: Career[]) {
+    if (typeof window === "undefined") {
+        return null;
+    }
 
-    // Auto-expand job based on URL hash (e.g., #job-senior-developer)
+    const hash = window.location.hash;
+
+    if (!hash.startsWith("#job-")) {
+        return null;
+    }
+
+    const slug = hash.replace("#job-", "");
+    return careers.some((career) => career.slug === slug) ? slug : null;
+}
+
+export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClientProps) {
+    const [activeJobId, setActiveJobId] = useState<string | null>(() => getInitialJobId(careers));
+
     useEffect(() => {
-        const hash = window.location.hash;
-        if (hash && hash.startsWith('#job-')) {
-            const slug = hash.replace('#job-', '');
-            // Check if this job exists in the careers list
-            const jobExists = careers.some(career => career.slug === slug);
-            if (jobExists) {
-                setActiveJobId(slug);
-                // Scroll to the job after a short delay to ensure DOM is ready
-                setTimeout(() => {
-                    const jobElement = document.getElementById(`job-${slug}`);
-                    if (jobElement) {
-                        jobElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 100);
-            }
+        if (!activeJobId) {
+            return;
         }
-    }, [careers]);
+
+        const timeoutId = window.setTimeout(() => {
+            const jobElement = document.getElementById(`job-${activeJobId}`);
+            if (jobElement) {
+                jobElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [activeJobId]);
 
     const toggleJob = (slug: string) => {
         setActiveJobId(activeJobId === slug ? null : slug);
@@ -232,7 +225,7 @@ export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClient
 
                                 {career.whatYoullBring && career.whatYoullBring.length > 0 && (
                                     <div className="job-section">
-                                        <h4 className="job-section-title">What You'll Bring</h4>
+                                        <h4 className="job-section-title">What You&apos;ll Bring</h4>
                                         <ul className="job-list">
                                             {career.whatYoullBring.map((item, idx) => (
                                                 <li key={idx}>{item}</li>
@@ -280,4 +273,3 @@ export default function CurrentOpeningsClient({ careers }: CurrentOpeningsClient
         </section>
     );
 }
-

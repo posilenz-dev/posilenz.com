@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import SharePopup from "@/components/blog/SharePopup";
-import { BlogPost } from "@/lib/blogData";
+import type { BlogPost } from "@/lib/keystatic";
 
 export default function BlogDetailClient({ post }: { post: BlogPost }) {
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -14,11 +14,10 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
 
     useEffect(() => {
         const handleScroll = () => {
-            const article = document.querySelector(".article-content-section");
+            const article = document.querySelector<HTMLElement>(".article-content-section");
             if (article) {
-                // @ts-ignore
                 const articleTop = article.offsetTop;
-                const articleHeight = (article as HTMLElement).offsetHeight;
+                const articleHeight = article.offsetHeight;
                 const windowHeight = window.innerHeight;
                 const scrollTop = window.scrollY;
 
@@ -79,16 +78,13 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
 
                     <div className="article-header-content">
                         <div className="article-header-left">
-                            {/* Article Meta */}
                             <div className="article-meta">
-                                <span className="article-number">{post.number}</span>
-                                <span className="article-date">{post.date}</span>
+                                <span className="article-number">{post.displayDay}</span>
+                                <span className="article-date">{post.displayMonthYear}</span>
                             </div>
 
-                            {/* Article Title */}
                             <h1 className="article-title">{post.title}</h1>
 
-                            {/* Share Button */}
                             <button
                                 className="share-btn"
                                 aria-label="Share article"
@@ -143,28 +139,27 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
                         <div className="article-header-right">
                             <div className="article-hero-image">
                                 <Image
-                                    src={post.image}
+                                    src={post.coverImage || "/images/og-image.png"}
                                     alt={post.title}
                                     width={800}
-                                    height={400} // Approximate aspect ratio
+                                    height={400}
                                     priority
                                 />
                             </div>
 
                             <div
                                 className="article-content"
-                                dangerouslySetInnerHTML={{ __html: post.content }}
+                                dangerouslySetInnerHTML={{ __html: post.contentHtml }}
                             />
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Wrapper div for content section targeting by progress bar script mainly */}
             <div
                 className="article-content-section"
                 style={{ height: 0, padding: 0 }}
-            ></div>
+            />
 
             <Footer />
             <SharePopup
